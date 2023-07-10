@@ -1,5 +1,6 @@
 package com.msf.routes
 
+import com.msf.customexception.EmployeeNotFoundException
 import com.msf.model.Employee
 import com.msf.model.empList
 import io.ktor.http.*
@@ -22,12 +23,15 @@ fun Application.empRoutes() {
 
         //getting the employee details by using id
         get("/{id?}") {
-            val id = call.parameters["id"] ?: return@get call.respondText("No paramters", status = HttpStatusCode.OK)
+            val id = call.parameters["id"] ?: return@get call.respondText("No parameters", status = HttpStatusCode.OK)
             val employee = empList.find {
                 it.id == id
-            } ?: return@get call.respondText("Employee not found", status = HttpStatusCode.BadRequest)
-
-            return@get call.respond(employee)
+            }
+            if (employee != null) {
+                call.respond(employee)
+            } else {
+                throw EmployeeNotFoundException("employee not found with ID: $id")
+            }
         }
 
         //adding the employee
@@ -52,7 +56,7 @@ fun Application.empRoutes() {
                 it.id == employeePostman.id
             } ?: return@put call.respondText("unable to add because id not found")
 
-            empList.set(empList.indexOf(employee), employeePostman)
+            empList[empList.indexOf(employee)] = employeePostman
             call.respondText("employee updated")
         }
 
@@ -76,18 +80,18 @@ fun Application.empRoutes() {
                 "No parameters",
                 status = HttpStatusCode.BadRequest
             )
-            val name = call.receiveText()
+            val name = call.receive<Map<String, String>>()["name"] ?: return@patch call.respondText("No parameters")
 
             val employee = empList.find {
                 it.id == id
             } ?: return@patch call.respondText("Employee not found with the given id")
+            val index = empList.indexOf(employee)
 
             // Update the specific value (name) for the employee
             employee.name = name
+            empList[index] = employee
 
             call.respondText("Name updated for employee with ID: $id", status = HttpStatusCode.OK)
         }
-
-
     }
 }
