@@ -1,15 +1,19 @@
 package com.msf.routes
 
-import com.msf.customexception.EmployeeNotFoundException
+
 import com.msf.model.Employee
 import com.msf.model.empList
+import com.msf.plugins.EmployeeNotFoundException
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Application.empRoutes() {
+
+fun Application.configureEmpRoutes() {
+
+
     routing {
 
         //getting all the employee details
@@ -24,6 +28,7 @@ fun Application.empRoutes() {
         //getting the employee details by using id
         get("/{id?}") {
             val id = call.parameters["id"] ?: return@get call.respondText("No parameters", status = HttpStatusCode.OK)
+             Integer.parseInt(id)
             val employee = empList.find {
                 it.id == id
             }
@@ -32,6 +37,10 @@ fun Application.empRoutes() {
             } else {
                 throw EmployeeNotFoundException("employee not found with ID: $id")
             }
+        }
+
+        get("/internal-error") {
+            throw Exception("Internal Server Error")
         }
 
         //adding the employee
@@ -62,10 +71,8 @@ fun Application.empRoutes() {
 
         //delete employee by using id
         delete("/{id?}") {
-            val id = call.parameters["id"] ?: return@delete call.respondText(
-                "No parameters",
-                status = HttpStatusCode.BadRequest
-            )
+            val id = call.parameters["id"]
+            Integer.parseInt(id)
             val employee = empList.find {
                 it.id == id
             } ?: return@delete call.respondText("Employee not found with the given id")
@@ -76,11 +83,9 @@ fun Application.empRoutes() {
 
         //updating the specific value by using id
         patch("/{id?}") {
-            val id = call.parameters["id"] ?: return@patch call.respondText(
-                "No parameters",
-                status = HttpStatusCode.BadRequest
-            )
-            val name = call.receive<Map<String, String>>()["name"] ?: return@patch call.respondText("No parameters")
+            val id = call.parameters["id"]
+            val name = call.receive<Map<String, String>>()["name"]
+            Integer.parseInt(id)
 
             val employee = empList.find {
                 it.id == id
@@ -88,7 +93,9 @@ fun Application.empRoutes() {
             val index = empList.indexOf(employee)
 
             // Update the specific value (name) for the employee
-            employee.name = name
+            if (name != null) {
+                employee.name = name
+            }
             empList[index] = employee
 
             call.respondText("Name updated for employee with ID: $id", status = HttpStatusCode.OK)
