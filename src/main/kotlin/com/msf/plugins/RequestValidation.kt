@@ -7,7 +7,9 @@ import io.ktor.server.plugins.requestvalidation.*
 fun Application.configureRequestValidation() {
 
     install(RequestValidation) {
+
         validate<Employee> { bodyText ->
+
             if (bodyText.name.isBlank()) {
                 ValidationResult.Invalid("Name field should not be empty")
             } else if (!bodyText.name.matches(Regex("[a-zA-Z]+"))) {
