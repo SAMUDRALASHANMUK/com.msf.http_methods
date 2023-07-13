@@ -1,22 +1,16 @@
 package com.msf.routes
 
-
-import com.msf.getData
+import com.msf.dao.getData
 import com.msf.model.Employee
-import com.msf.model.Post
 import com.msf.model.empList
 import com.msf.plugins.EmployeeNotFoundException
-import io.ktor.client.*
-import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-
 fun Application.configureEmpRoutes() {
-
 
     routing {
 
@@ -32,16 +26,14 @@ fun Application.configureEmpRoutes() {
         //getting the employee details by using id
         get("/{id?}") {
             val id = call.parameters["id"] ?: return@get call.respondText("No parameters", status = HttpStatusCode.OK)
-            Integer.parseInt(id)
-            val employee = empList.find {
-                it.id == id
-            }
+            val employee = empList.find { it.id == id }
             if (employee != null) {
                 call.respond(employee)
             } else {
-                throw EmployeeNotFoundException("employee not found with ID: $id")
+                throw EmployeeNotFoundException("Employee not found with ID: $id")
             }
         }
+
 
         get("/internal-error") {
             throw Exception("Internal Server Error")
