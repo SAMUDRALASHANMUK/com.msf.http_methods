@@ -1,9 +1,9 @@
 package com.msf.routes
 
-import com.msf.dao.getData
-import com.msf.model.Employee
-import com.msf.model.empList
-import com.msf.plugins.EmployeeNotFoundException
+import com.msf.data.methods.getData
+import com.msf.data.model.Employee
+import com.msf.data.model.empList
+import com.msf.domain.exceptions.EmployeeNotFoundException
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*

@@ -13,7 +13,5 @@ fun Application.configureContentNegotiation() {
             isLenient = true
             ignoreUnknownKeys = true
         })
-
-
     }
 }
