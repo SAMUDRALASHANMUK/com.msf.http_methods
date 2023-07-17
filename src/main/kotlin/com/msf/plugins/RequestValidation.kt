@@ -1,6 +1,8 @@
 package com.msf.plugins
 
-import com.msf.model.Employee
+
+import com.msf.data.model.Employee
+import com.msf.data.model.User
 import io.ktor.server.application.*
 import io.ktor.server.plugins.requestvalidation.*
 
@@ -18,12 +20,24 @@ fun Application.configureRequestValidation() {
                 (!bodyText.email.matches(Regex("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"))) -> ValidationResult.Invalid(
                     "Invalid email address format"
                 )
-
                 bodyText.email.length > 100 -> ValidationResult.Invalid("Email should not exceed 100 characters")
                 bodyText.id.toInt() <= 0 -> ValidationResult.Invalid("Id should not be 0 or less than 0")
                 bodyText.age <= 0 -> ValidationResult.Invalid("age must be positive")
                 else -> ValidationResult.Valid
+            }
+        }
+        validate<User> {
+            when {
+                it.user_name.isBlank() -> ValidationResult.Invalid("User name field should not be empty")
+                (!it.user_name.matches(Regex("[a-zA-Z]+"))) -> ValidationResult.Invalid("User name should only contain alphabetic characters")
+                it.user_name.length !in 2..50 -> ValidationResult.Invalid("User name should be between 2 and 50 characters")
+                it.email.isBlank() -> ValidationResult.Invalid("Email field should not be empty")
+                (!it.email.matches(Regex("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"))) -> ValidationResult.Invalid(
+                    "Invalid email address format"
+                )
 
+                it.email.length > 100 -> ValidationResult.Invalid("email should not exceed 100 characters")
+                else -> ValidationResult.Valid
             }
         }
     }
