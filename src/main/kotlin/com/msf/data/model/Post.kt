@@ -1,8 +1,9 @@
 package com.msf.data.model
 
 import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.sql.Table
+
 @Serializable
-data class Post(val post_id: Int=1, val user_id: Int, val title: String, val content: String)
+data class Post(val post_id: Int = 0, val user_id: Int, val title: String, val content: String, val category_id: Int)
+
 
 

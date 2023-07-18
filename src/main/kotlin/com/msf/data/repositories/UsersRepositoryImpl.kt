@@ -1,6 +1,7 @@
 package com.msf.data.repositories
 
 import com.msf.dao.DatabaseFactory.dbQuery
+import com.msf.data.methods.resultRowToUser
 import com.msf.data.model.User
 import com.msf.data.schemas.Users
 import com.msf.domain.interfaces.UsersRepository
@@ -14,20 +15,20 @@ class UsersRepositoryImpl : UsersRepository {
             it[user_name] = username
             it[Users.email] = email
         }
-        insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToArticle)
+        insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToUser)
     }
 
 
     override suspend fun getUserById(userId: Int): User? = dbQuery {
         Users
             .select(Users.user_id eq userId)
-            .map(::resultRowToArticle)
+            .map(::resultRowToUser)
             .singleOrNull()
     }
 
     override suspend fun getAllUsers(): List<User> = dbQuery {
 
-        Users.selectAll().map(::resultRowToArticle)
+        Users.selectAll().map(::resultRowToUser)
     }
 
     override suspend fun editUser(userId: Int, newUsername: String, newEmail: String): Boolean = dbQuery {
@@ -44,11 +45,7 @@ class UsersRepositoryImpl : UsersRepository {
         deletedRows > 0
     }
 
-    private fun resultRowToArticle(row: ResultRow) = User(
-        user_id = row[Users.user_id],
-        user_name = row[Users.user_name],
-        email = row[Users.email],
-    )
+
 }
 
 

@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
+import org.jetbrains.exposed.exceptions.ExposedSQLException
 
 fun Application.configureStatusPages() {
     install(StatusPages) {
@@ -32,6 +33,10 @@ fun Application.configureStatusPages() {
                 is UserNotFoundException -> call.respondText(
                     "User not found: ${cause.message}",
                     status = HttpStatusCode.NotFound // Change this to NotFound
+                )
+                is ExposedSQLException -> call.respondText(
+                    "Data Base Error",
+                    status = HttpStatusCode.BadGateway
                 )
 
                 else -> call.respondText(

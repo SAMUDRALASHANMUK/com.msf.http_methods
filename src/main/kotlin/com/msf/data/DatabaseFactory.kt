@@ -1,9 +1,6 @@
 package com.msf.dao
 
-import com.msf.data.schemas.Articles
-import com.msf.data.schemas.Posts
-import com.msf.data.schemas.Profiles
-import com.msf.data.schemas.Users
+import com.msf.data.schemas.*
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -24,6 +21,8 @@ object DatabaseFactory {
             SchemaUtils.createMissingTablesAndColumns(Users)
             SchemaUtils.createMissingTablesAndColumns(Posts)
             SchemaUtils.createMissingTablesAndColumns(Profiles)
+            SchemaUtils.createMissingTablesAndColumns(Categories)
+            SchemaUtils.createMissingTablesAndColumns(PostCategories)
         }
     }
 

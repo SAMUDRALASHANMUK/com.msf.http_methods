@@ -1,6 +1,7 @@
 package com.msf.data.repositories
 
 import com.msf.dao.DatabaseFactory.dbQuery
+import com.msf.data.methods.resultRowToProfile
 import com.msf.data.model.Profile
 import com.msf.data.schemas.Profiles
 import com.msf.data.schemas.Profiles.user_id
@@ -19,26 +20,26 @@ class ProfileRepositoryImpl : ProfileRepository {
             it[profile_data] = profileData
             it[user_id] = userId
         }
-        insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToArticle)
+        insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToProfile)
     }
 
     override suspend fun getProfileById(profileId: Int): Profile? = dbQuery {
 
         Profiles
             .select(Profiles.profile_id eq profileId)
-            .map(::resultRowToArticle)
+            .map(::resultRowToProfile)
             .singleOrNull()
     }
 
     override suspend fun getProfileByUserId(userId: Int): Profile? = dbQuery {
         Profiles
             .select(user_id eq userId)
-            .map(::resultRowToArticle)
+            .map(::resultRowToProfile)
             .singleOrNull()
     }
 
     override suspend fun getAllProfiles(): List<Profile> = dbQuery {
-        Profiles.selectAll().map(::resultRowToArticle)
+        Profiles.selectAll().map(::resultRowToProfile)
     }
 
     override suspend fun editProfile(profileId: Int, newProfileData: String): Boolean = dbQuery {
@@ -53,9 +54,5 @@ class ProfileRepositoryImpl : ProfileRepository {
         deletedRows > 0
     }
 
-    private fun resultRowToArticle(row: ResultRow) = Profile(
-        profile_id = row[Profiles.profile_id],
-        user_id = row[Profiles.user_id],
-        profile_data = row[Profiles.profile_data],
-    )
+
 }
