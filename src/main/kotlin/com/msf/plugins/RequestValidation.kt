@@ -35,7 +35,6 @@ fun Application.configureRequestValidation() {
                 (!it.email.matches(Regex("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"))) -> ValidationResult.Invalid(
                     "Invalid email address format"
                 )
-
                 it.email.length > 100 -> ValidationResult.Invalid("email should not exceed 100 characters")
                 else -> ValidationResult.Valid
             }

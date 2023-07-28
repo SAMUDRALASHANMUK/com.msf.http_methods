@@ -41,6 +41,7 @@ fun Application.configureEmpRoutes() {
 
         get("/api/data") {
             call.respond(getData())
+
         }
 
 

@@ -32,16 +32,19 @@ fun Application.configureStatusPages() {
 
                 is UserNotFoundException -> call.respondText(
                     "User not found: ${cause.message}",
-                    status = HttpStatusCode.NotFound // Change this to NotFound
-                )
-                is ExposedSQLException -> call.respondText(
-                    "Data Base Error",
-                    status = HttpStatusCode.BadGateway
+                    status = HttpStatusCode.NotFound
                 )
 
+                is ExposedSQLException -> call.respondText(
+                    "Data Base Error: ${cause.message}",
+                    status = HttpStatusCode.BadRequest
+                )
+
+                is IllegalStateException -> call.respond(HttpStatusCode.BadRequest, "Bad request: ${cause.message}")
+
+
                 else -> call.respondText(
-                    text = "$cause",
-                    status = HttpStatusCode.InternalServerError
+                    text = "${cause.message}",
                 )
             }
         }
@@ -52,6 +55,5 @@ fun Application.configureStatusPages() {
                 status = status
             )
         }
-
     }
 }

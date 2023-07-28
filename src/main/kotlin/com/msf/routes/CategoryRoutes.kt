@@ -7,20 +7,22 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 
 fun Application.configureCategoryRoutes() {
-    val categoriesRepositoryImpl = CategoryRepositoryImpl()
+
+    val categoriesRepository: CategoryRepositoryImpl by inject()
     routing {
 
         route("/categories") {
             get {
-                val categories = categoriesRepositoryImpl.getAllCategories()
+                val categories = categoriesRepository.getAllCategories()
                 call.respond(HttpStatusCode.OK, categories)
             }
             post {
                 val requestCategory = call.receive<Categorie>()
                 val addedCategory =
-                    categoriesRepositoryImpl.addCategory(
+                    categoriesRepository.addCategory(
                         requestCategory.category_name,
                         requestCategory.post_id
                     )
@@ -33,7 +35,7 @@ fun Application.configureCategoryRoutes() {
             get("/{id}") {
                 val categoryId = call.parameters["id"]?.toIntOrNull()
                 if (categoryId != null) {
-                    val category = categoriesRepositoryImpl.getCategoryById(categoryId)
+                    val category = categoriesRepository.getCategoryById(categoryId)
                     if (category != null) {
                         call.respond(HttpStatusCode.OK, category)
                     } else {
@@ -47,7 +49,7 @@ fun Application.configureCategoryRoutes() {
                 val categoryId = call.parameters["id"]?.toIntOrNull()
                 if (categoryId != null) {
                     val requestCategory = call.receive<Categorie>()
-                    val updated = categoriesRepositoryImpl.updateCategory(
+                    val updated = categoriesRepository.updateCategory(
                         categoryId,
                         requestCategory.category_name,
                         requestCategory.post_id
@@ -64,7 +66,7 @@ fun Application.configureCategoryRoutes() {
             delete("/") {
                 val categoryId = call.parameters["id"]?.toIntOrNull()
                 if (categoryId != null) {
-                    val removed = categoriesRepositoryImpl.removeCategory(categoryId)
+                    val removed = categoriesRepository.removeCategory(categoryId)
                     if (removed) {
                         call.respond(HttpStatusCode.OK, "Category removed successfully.")
                     } else {

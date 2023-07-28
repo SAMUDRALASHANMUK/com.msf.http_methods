@@ -12,10 +12,6 @@ fun Application.configureContentNegotiation() {
         gson {
             setPrettyPrinting()
             clearIgnoredTypes()
-
         }
-
-
         }
-
     }

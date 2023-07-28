@@ -8,11 +8,13 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 
 // Route function for Post table
 fun Application.configurePostRoutes() {
     routing {
-        val postRepository = PostRepositoryImpl()
+        val postRepository: PostRepositoryImpl by inject()
+
 
         route("/posts") {
             // Create a new post

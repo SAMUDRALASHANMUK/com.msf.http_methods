@@ -18,11 +18,14 @@ object DatabaseFactory {
 
         transaction {
             SchemaUtils.create(Articles)
-            SchemaUtils.createMissingTablesAndColumns(Users)
-            SchemaUtils.createMissingTablesAndColumns(Posts)
-            SchemaUtils.createMissingTablesAndColumns(Profiles)
-            SchemaUtils.createMissingTablesAndColumns(Categories)
-            SchemaUtils.createMissingTablesAndColumns(PostCategories)
+            SchemaUtils.createMissingTablesAndColumns(
+                Users,
+                Posts,
+                Profiles,
+                Categories,
+                PostCategories,
+                UserLoginTable
+            )
         }
     }
 

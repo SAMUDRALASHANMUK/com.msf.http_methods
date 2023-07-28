@@ -7,8 +7,6 @@ import com.msf.data.schemas.Categories
 import com.msf.data.schemas.PostCategories
 import com.msf.data.schemas.Posts
 import com.msf.domain.interfaces.PostCategoriesRepository
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -16,7 +14,7 @@ class PostCategoriesRepositoryImpl : PostCategoriesRepository {
 
     override suspend fun getPostsForCategory(categoryId: Int): List<Post> = dbQuery {
         return@dbQuery transaction {
-            (PostCategories innerJoin Posts)
+            (Posts innerJoin PostCategories)
                 .select { PostCategories.category_id eq categoryId }
                 .map {
                     Post(
@@ -30,6 +28,7 @@ class PostCategoriesRepositoryImpl : PostCategoriesRepository {
         }
     }
 
+
     override suspend fun getCategoriesForPost(postId: Int): List<Categorie> = dbQuery {
         return@dbQuery transaction {
             (PostCategories innerJoin Categories)
@@ -38,12 +37,5 @@ class PostCategoriesRepositoryImpl : PostCategoriesRepository {
         }
     }
 
-    override suspend fun associatePostWithCategory(postId: Int, categoryId: Int) {
-        transaction {
-            PostCategories.insert {
-                it[PostCategories.post_id] = postId
-                it[PostCategories.category_id] = categoryId
-            }
-        }
-    }
+
 }

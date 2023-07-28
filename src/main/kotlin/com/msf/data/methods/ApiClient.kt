@@ -15,6 +15,7 @@ suspend fun getData(): Array<PostClientTest> {
             gson()
         }
     }
+
     val response = client.get("https://jsonplaceholder.typicode.com/posts")
     return Gson().fromJson(response.bodyAsText(), Array<PostClientTest>::class.java)
 

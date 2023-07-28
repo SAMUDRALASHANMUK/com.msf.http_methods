@@ -3,11 +3,12 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.http.HttpStatusCode
+import org.koin.ktor.ext.inject
 
 
 fun Application.configurePostCategoryRoutes() {
-    val postCategoriesRepositoryImpl = PostCategoriesRepositoryImpl()
+
+    val postCategoriesRepository: PostCategoriesRepositoryImpl by inject()
 
     routing {
         get("/categories/{category_id}/posts") {
@@ -18,7 +19,7 @@ fun Application.configurePostCategoryRoutes() {
                 return@get
             }
 
-            val associatedPosts = postCategoriesRepositoryImpl.getPostsForCategory(categoryId)
+            val associatedPosts = postCategoriesRepository.getPostsForCategory(categoryId)
             call.respond(HttpStatusCode.OK, associatedPosts)
         }
 
@@ -30,7 +31,7 @@ fun Application.configurePostCategoryRoutes() {
                 return@get
             }
 
-            val associatedCategories = postCategoriesRepositoryImpl.getCategoriesForPost(postId)
+            val associatedCategories = postCategoriesRepository.getCategoriesForPost(postId)
             call.respond(HttpStatusCode.OK, associatedCategories)
         }
     }
