@@ -15,4 +15,5 @@ fun Application.module() {
     configureRequestValidation()
     configureRouting()
     configureStatusPages()
+
 }

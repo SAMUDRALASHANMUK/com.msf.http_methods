@@ -15,4 +15,5 @@ fun Application.configureRouting() {
     configureCategoryRoutes()
     configureUserSessionRoutes()
     configureUserLoginRoutes()
+    configureDownloadRoutes()
 }

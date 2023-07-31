@@ -62,4 +62,8 @@ dependencies {
     implementation group: 'io.insert-koin', name: 'koin-ktor', version: '3.4.1'
 
 
+    implementation("io.ktor:ktor-client-apache:$ktor_version")
+
+    testImplementation("io.ktor:ktor-client-mock:$ktor_version")
+
 }
