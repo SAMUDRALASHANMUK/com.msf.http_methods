@@ -8,7 +8,7 @@ import com.msf.domain.interfaces.UsersRepository
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
-class UsersRepositoryImpl : UsersRepository {
+open class UsersRepositoryImpl : UsersRepository {
     override suspend fun createUser(username: String, email: String): User? = dbQuery {
 
         val insertStatement = Users.insert {
@@ -44,8 +44,6 @@ class UsersRepositoryImpl : UsersRepository {
         val deletedRows = Users.deleteWhere { Users.user_id eq userId }
         deletedRows > 0
     }
-
-
 }
 
 

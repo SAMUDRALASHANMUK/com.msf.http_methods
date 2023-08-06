@@ -12,7 +12,9 @@ import org.koin.ktor.ext.inject
 
 
 fun Application.configureUsersRoutes() {
-    val usersRepository: UsersRepositoryImpl by inject()
+
+   val usersRepository: UsersRepositoryImpl by inject()
+    //val usersRepository = UsersRepositoryImpl()
 
 
     routing {
@@ -38,7 +40,6 @@ fun Application.configureUsersRoutes() {
 
             post("/") {
                 val user = call.receive<User>()
-                user.user_id = 0
                 val createdUser = usersRepository.createUser(user.user_name, user.email)
                 if (createdUser != null) {
                     call.respond(HttpStatusCode.Created, createdUser)

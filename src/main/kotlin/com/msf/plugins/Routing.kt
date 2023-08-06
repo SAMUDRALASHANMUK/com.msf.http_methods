@@ -8,7 +8,6 @@ import io.ktor.server.application.*
 fun Application.configureRouting() {
     configureEmpRoutes()
     configureArticleRoutes()
-    configureUsersRoutes()
     configurePostRoutes()
     configureProfileRoutes()
     configurePostCategoryRoutes()
@@ -16,4 +15,5 @@ fun Application.configureRouting() {
     configureUserSessionRoutes()
     configureUserLoginRoutes()
     configureDownloadRoutes()
+    configureUsersRoutes()
 }

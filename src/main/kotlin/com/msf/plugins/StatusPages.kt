@@ -42,7 +42,6 @@ fun Application.configureStatusPages() {
 
                 is IllegalStateException -> call.respond(HttpStatusCode.BadRequest, "Bad request: ${cause.message}")
 
-
                 else -> call.respondText(
                     text = "${cause.message}",
                 )
