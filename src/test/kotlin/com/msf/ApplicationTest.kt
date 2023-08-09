@@ -1,18 +1,22 @@
 package com.msf
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import com.msf.data.model.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
-import io.ktor.server.engine.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.testing.*
+import junit.framework.TestCase.assertNotNull
+import junit.framework.TestCase.assertTrue
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.Test
 import java.io.File
+import java.util.*
 import kotlin.test.assertEquals
 
 class ApplicationTest {
@@ -436,9 +440,8 @@ class ApplicationTest {
         val url = "https://www.africau.edu/images/default/sample.pdf"
         val response = client.get("/download?url=$url")
         assertEquals(HttpStatusCode.OK, response.status)
-        assertEquals("File downloaded and saved to ${getDefaultFileName(url).path}", response.bodyAsText().trim('"'))
+        assertEquals("File downloaded and saved to sample.pdf", response.bodyAsText().trim('"'))
     }
-
 
     @Test
     fun testDownloadRouteWithInvalidUrl() = testApplication {
@@ -448,18 +451,64 @@ class ApplicationTest {
         assertEquals("Error: Please provide a valid file URL.", response.bodyAsText().trim('"'))
     }
 
-
     @Test
     fun testDownloadRouteWithDownloadFailure() = testApplication {
         val url = "https://example.com/nonexistentfile.txt"
         val response = client.get("/download?url=$url")
         assertEquals(HttpStatusCode.InternalServerError, response.status)
-        assertEquals("Error downloading the file: Download error", response.bodyAsText())
+        assertEquals("Error downloading the file: Download error", response.bodyAsText().trim('"'))
     }
 
     private fun getDefaultFileName(url: String): File {
         return File("mocked_file.txt")
     }
+
+    //Test cases for user login routes
+    @Test
+    fun testLoginRoute() = testApplication {
+        val user = UserLogin("testuser", "password123")
+
+        val response = client.post("/loginuser") {
+            setBody("{\"userName\": \"testuser\", \"password\": \"password123\"}")
+            headers[HttpHeaders.ContentType] = ContentType.Application.Json.toString()
+        }
+
+        val responseContent = response.bodyAsText()
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertNotNull(responseContent)
+        assertTrue(responseContent!!.contains("token"))
+
+    }
+
+    @Test
+    fun testHelloRouteWithValidToken() = testApplication {
+        val token = generateValidToken("testuser")
+
+        val response = client.get("/userlogin/hello") {
+            headers[HttpHeaders.Authorization] = "Bearer $token"
+        }
+        val expectedResponse = "Hello, testuser! Token is expired at"
+
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertTrue(response.bodyAsText().startsWith(expectedResponse))
+    }
+
+    @Test
+    fun testHelloRouteWithoutToken() = testApplication {
+        val response = client.get("/userlogin/hello")
+        assertEquals(HttpStatusCode.Unauthorized, response.status)
+    }
+
+    private fun generateValidToken(username: String): String {
+        val secret = "secret"
+        val issuer = "http://0.0.0.0:8080/"
+        val audience = "http://0.0.0.0:8080/hello"
+
+        return JWT.create().withAudience(audience).withIssuer(issuer).withClaim("username", username)
+            .withExpiresAt(Date(System.currentTimeMillis() + 60000)).sign(Algorithm.HMAC256(secret))
+    }
+
+    //Test cases for user session routes
 
 }
 
