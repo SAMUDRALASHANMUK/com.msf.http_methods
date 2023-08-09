@@ -11,7 +11,7 @@ fun Application.configureSessions() {
         val secretSignKey = hex("6819b57a326945c1968f45236589")
         cookie<UserSession>("user_session") {
             cookie.path = "/"
-            cookie.maxAgeInSeconds = 300
+            cookie.maxAgeInSeconds = 10
             transform(SessionTransportTransformerEncrypt(secretEncryptKey, secretSignKey))
         }
     }

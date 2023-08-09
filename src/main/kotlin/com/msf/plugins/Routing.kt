@@ -16,4 +16,5 @@ fun Application.configureRouting() {
     configureUserLoginRoutes()
     configureDownloadRoutes()
     configureUsersRoutes()
+    configurePostClientRoutes()
 }

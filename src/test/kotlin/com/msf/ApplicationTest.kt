@@ -435,7 +435,7 @@ class ApplicationTest {
 
     //File download routes
     @Test
-    fun testDownloadRouteWithValidUrl() = testApplication {
+    fun `testDownloadRouteWithValidUrl`() = testApplication {
 
         val url = "https://www.africau.edu/images/default/sample.pdf"
         val response = client.get("/download?url=$url")
@@ -444,7 +444,7 @@ class ApplicationTest {
     }
 
     @Test
-    fun testDownloadRouteWithInvalidUrl() = testApplication {
+    fun `testDownloadRouteWithInvalidUrl`() = testApplication {
 
         val response = client.get("/download")
         assertEquals(HttpStatusCode.BadRequest, response.status)
@@ -452,7 +452,7 @@ class ApplicationTest {
     }
 
     @Test
-    fun testDownloadRouteWithDownloadFailure() = testApplication {
+    fun `testDownloadRouteWithDownloadFailure`() = testApplication {
         val url = "https://example.com/nonexistentfile.txt"
         val response = client.get("/download?url=$url")
         assertEquals(HttpStatusCode.InternalServerError, response.status)
@@ -465,7 +465,7 @@ class ApplicationTest {
 
     //Test cases for user login routes
     @Test
-    fun testLoginRoute() = testApplication {
+    fun `testLoginRoute`() = testApplication {
         val user = UserLogin("testuser", "password123")
 
         val response = client.post("/loginuser") {
@@ -481,7 +481,7 @@ class ApplicationTest {
     }
 
     @Test
-    fun testHelloRouteWithValidToken() = testApplication {
+    fun `testHelloRouteWithValidToken`() = testApplication {
         val token = generateValidToken("testuser")
 
         val response = client.get("/userlogin/hello") {
@@ -494,7 +494,7 @@ class ApplicationTest {
     }
 
     @Test
-    fun testHelloRouteWithoutToken() = testApplication {
+    fun `testHelloRouteWithoutToken`() = testApplication {
         val response = client.get("/userlogin/hello")
         assertEquals(HttpStatusCode.Unauthorized, response.status)
     }
@@ -509,7 +509,51 @@ class ApplicationTest {
     }
 
     //Test cases for user session routes
+    @Test
+    fun `test login route`() = testApplication {
 
+        val response = client.get("/login")
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals("/user", response.headers["Location"])
+    }
+
+    @Test
+    fun `test user route with session`() = testApplication {
+
+        val response = client.get("/user")
+        assertEquals(HttpStatusCode.OK, response.status)
+    }
+
+    @Test
+    fun `test user route without session`() = testApplication {
+        val response = client.get("/user")
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals("Not logged in", response.bodyAsText().trim('"'))
+    }
+
+    @Test
+    fun `test logout route with session`() = testApplication {
+
+        val response = client.get("/logout")
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals("/user", response.headers["Location"])
+    }
+
+    @Test
+    fun `test logout route without session`() = testApplication {
+
+        val response = client.get("/logout")
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals("/user", response.headers["Location"])
+    }
+
+    //Test cases for post client test
+    @Test
+    fun `test for Post Client Test Route`() = testApplication {
+        val response = client.get("/postClientTest")
+        assertEquals(HttpStatusCode.OK, response.status)
+
+    }
 }
 
 
