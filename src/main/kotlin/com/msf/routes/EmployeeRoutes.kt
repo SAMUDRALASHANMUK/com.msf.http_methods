@@ -2,7 +2,7 @@ package com.msf.routes
 
 import com.msf.data.methods.getData
 import com.msf.data.model.Employee
-import com.msf.data.model.empList
+import com.msf.data.model.list.empList
 import com.msf.domain.exceptions.EmployeeNotFoundException
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -26,7 +26,7 @@ fun Application.configureEmpRoutes() {
         //getting the employee details by using id
         get("/{id?}") {
             val id = call.parameters["id"] ?: return@get call.respondText("No parameters", status = HttpStatusCode.OK)
-            val employee = empList.find { it.id == id }
+            val employee = empList.find { it.id == id.toInt() }
             if (employee != null) {
                 call.respond(employee)
             } else {
@@ -55,7 +55,7 @@ fun Application.configureEmpRoutes() {
                 call.respondText("Employee ID already exists", status = HttpStatusCode.BadRequest)
             } else {
                 empList.add(employee)
-                call.respondText("Employee added", status = HttpStatusCode.OK)
+                call.respond(employee)
             }
         }
 
@@ -73,8 +73,7 @@ fun Application.configureEmpRoutes() {
 
         //delete employee by using id
         delete("/{id?}") {
-            val id = call.parameters["id"]
-            Integer.parseInt(id)
+            val id = call.parameters["id"]?.toInt()
             val employee = empList.find {
                 it.id == id
             } ?: return@delete call.respondText("Employee not found with the given id")
@@ -85,10 +84,8 @@ fun Application.configureEmpRoutes() {
 
         //updating the specific value by using id
         patch("/{id?}") {
-            val id = call.parameters["id"]
+            val id = call.parameters["id"]?.toInt()
             val name = call.receive<Map<String, String>>()["name"]
-            Integer.parseInt(id)
-
             val employee = empList.find {
                 it.id == id
             } ?: return@patch call.respondText("Employee not found with the given id")

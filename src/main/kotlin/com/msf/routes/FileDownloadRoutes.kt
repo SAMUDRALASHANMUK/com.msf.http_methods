@@ -26,7 +26,6 @@ fun Application.configureDownloadRoutes() {
 
             try {
                 client.downloadFile(fileUrl, outputFile)
-
                 call.respond(HttpStatusCode.OK, "File downloaded and saved to ${outputFile.path}")
             } catch (e: Exception) {
                 call.respond(HttpStatusCode.InternalServerError, "Error downloading the file: ${e.message}")

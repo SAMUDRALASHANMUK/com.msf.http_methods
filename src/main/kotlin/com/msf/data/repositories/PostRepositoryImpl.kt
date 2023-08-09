@@ -45,7 +45,7 @@ class PostRepositoryImpl : PostRepository {
 
     override suspend fun getPostById(postId: Int): Post? = dbQuery {
         Posts
-            .selectAll()
+            .select(Posts.post_id eq postId)
             .map(::resultRowToPost)
             .singleOrNull()
     }

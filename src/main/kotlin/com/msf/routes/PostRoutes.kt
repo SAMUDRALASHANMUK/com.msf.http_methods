@@ -53,9 +53,11 @@ fun Application.configurePostRoutes() {
                         call.respond(post)
                     } else {
                         call.respond(HttpStatusCode.NotFound)
+                        println("Post with ID $postId not found.")
                     }
                 } else {
                     call.respond(HttpStatusCode.BadRequest)
+                    println("Invalid postId in the request.")
                 }
             }
 

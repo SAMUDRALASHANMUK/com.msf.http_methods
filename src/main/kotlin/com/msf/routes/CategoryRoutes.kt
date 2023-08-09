@@ -45,7 +45,7 @@ fun Application.configureCategoryRoutes() {
                     call.respond(HttpStatusCode.BadRequest, "Invalid category ID.")
                 }
             }
-            put("/") {
+            put("/{categoryId}") {
                 val categoryId = call.parameters["id"]?.toIntOrNull()
                 if (categoryId != null) {
                     val requestCategory = call.receive<Categorie>()
@@ -63,19 +63,21 @@ fun Application.configureCategoryRoutes() {
                     call.respond(HttpStatusCode.BadRequest, "Invalid category ID.")
                 }
             }
-            delete("/") {
-                val categoryId = call.parameters["id"]?.toIntOrNull()
+            delete("/{categoryId}") {
+                val categoryId = call.parameters["categoryId"]?.toIntOrNull()
+
                 if (categoryId != null) {
-                    val removed = categoriesRepository.removeCategory(categoryId)
-                    if (removed) {
-                        call.respond(HttpStatusCode.OK, "Category removed successfully.")
+                    val deleted = categoriesRepository.removeCategory(categoryId)
+                    if (deleted) {
+                        call.respond(HttpStatusCode.OK)
                     } else {
-                        call.respond(HttpStatusCode.NotFound, "Category not found.")
+                        call.respond(HttpStatusCode.NotFound)
                     }
                 } else {
-                    call.respond(HttpStatusCode.BadRequest, "Invalid category ID.")
+                    call.respond(HttpStatusCode.BadRequest)
                 }
             }
+
         }
     }
 }

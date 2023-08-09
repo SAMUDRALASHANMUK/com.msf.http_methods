@@ -14,9 +14,9 @@ fun Application.configureKoin() {
         single<PostCategoriesRepositoryImpl> { PostCategoriesRepositoryImpl() }
         single<ProfileRepositoryImpl> { ProfileRepositoryImpl() }
         single<UserLoginImpl> { UserLoginImpl() }
+        single<CategoryRepositoryImpl> { CategoryRepositoryImpl() }
     }
     install(Koin) {
         modules(myModule)
     }
-
 }
