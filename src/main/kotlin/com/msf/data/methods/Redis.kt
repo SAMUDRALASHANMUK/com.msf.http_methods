@@ -1,13 +1,16 @@
 package com.msf.data.methods
 
 import com.msf.data.model.UserSession
+import com.typesafe.config.ConfigFactory
+import io.ktor.server.config.*
+import io.ktor.server.config.ConfigLoader.Companion.load
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import redis.clients.jedis.Jedis
 
-
-const val redisHost = "localhost"
-const val redisPort = 6379
+val config = HoconApplicationConfig(ConfigFactory.load())
+val redisHost = config.property("host").getString()
+val redisPort = Integer.parseInt(config.property("port").toString())
 
 //  Function to create a Redis connection
 suspend fun createRedisConnection(): Jedis = withContext(Dispatchers.IO) {

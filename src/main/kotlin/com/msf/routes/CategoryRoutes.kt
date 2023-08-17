@@ -23,8 +23,7 @@ fun Application.configureCategoryRoutes() {
                 val requestCategory = call.receive<Categorie>()
                 val addedCategory =
                     categoriesRepository.addCategory(
-                        requestCategory.category_name,
-                        requestCategory.post_id
+                        requestCategory.category_name
                     )
                 if (addedCategory != null) {
                     call.respond(HttpStatusCode.Created, addedCategory)
@@ -46,13 +45,12 @@ fun Application.configureCategoryRoutes() {
                 }
             }
             put("/{categoryId}") {
-                val categoryId = call.parameters["id"]?.toIntOrNull()
+                val categoryId = call.parameters["categoryId"]?.toIntOrNull()
                 if (categoryId != null) {
                     val requestCategory = call.receive<Categorie>()
                     val updated = categoriesRepository.updateCategory(
                         categoryId,
-                        requestCategory.category_name,
-                        requestCategory.post_id
+                        requestCategory.category_name
                     )
                     if (updated) {
                         call.respond(HttpStatusCode.OK, "Category updated successfully.")
@@ -62,6 +60,7 @@ fun Application.configureCategoryRoutes() {
                 } else {
                     call.respond(HttpStatusCode.BadRequest, "Invalid category ID.")
                 }
+
             }
             delete("/{categoryId}") {
                 val categoryId = call.parameters["categoryId"]?.toIntOrNull()

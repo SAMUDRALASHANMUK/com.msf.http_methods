@@ -1,9 +1,6 @@
 package com.msf.plugins
 
-import com.msf.domain.exceptions.EmployeeNotFoundException
-import com.msf.domain.exceptions.PostNotFoundException
-import com.msf.domain.exceptions.ProfileNotFoundException
-import com.msf.domain.exceptions.UserNotFoundException
+import com.msf.domain.exceptions.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
@@ -42,6 +39,7 @@ fun Application.configureStatusPages() {
 
                 is IllegalStateException -> call.respond(HttpStatusCode.BadRequest, "Bad request: ${cause.message}")
 
+                is UserDeletionException -> call.respond(HttpStatusCode.NotFound, message = " ${cause.message}")
                 else -> call.respondText(
                     text = "${cause.message}",
                 )

@@ -15,6 +15,7 @@ fun Application.configureKoin() {
         single<ProfileRepositoryImpl> { ProfileRepositoryImpl() }
         single<UserLoginImpl> { UserLoginImpl() }
         single<CategoryRepositoryImpl> { CategoryRepositoryImpl() }
+        single<MockUsersRepository> { MockUsersRepository() }
     }
     install(Koin) {
         modules(myModule)

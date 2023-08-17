@@ -6,7 +6,7 @@ interface CategoryRepository {
 
 
     // Add a new category
-    suspend fun addCategory(categoryName: String, postId: Int): Categorie?
+    suspend fun addCategory(categoryName: String): Categorie?
 
     // Get all categories
     suspend fun getAllCategories(): List<Categorie>
@@ -15,7 +15,7 @@ interface CategoryRepository {
     suspend fun getCategoryById(categoryId: Int): Categorie?
 
     // Update an existing category
-    suspend fun updateCategory(categoryId: Int, categoryName: String, postId: Int): Boolean
+    suspend fun updateCategory(categoryId: Int, categoryName: String): Boolean
 
     // Remove a category
     suspend fun removeCategory(categoryId: Int): Boolean

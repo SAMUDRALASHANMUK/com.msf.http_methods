@@ -7,5 +7,6 @@ interface PostCategoriesRepository {
 
     suspend fun getPostsForCategory(categoryId: Int): List<Post>
     suspend fun getCategoriesForPost(postId: Int): List<Categorie>
+    suspend fun associatePostWithCategory(postId: Int, categoryId: Int)
 
 }

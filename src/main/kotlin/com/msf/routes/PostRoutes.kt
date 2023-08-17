@@ -23,18 +23,14 @@ fun Application.configurePostRoutes() {
             post("/") {
                 val post = call.receive<Post>()
 
-                // Ensure that at least one category ID is provided
-                if (post.category_id != null) {
-                    val createdPost =
-                        postRepository.createPost(post.user_id, post.title, post.content, post.category_id)
-                    if (createdPost != null) {
-                        call.respond(HttpStatusCode.Created, createdPost)
-                    } else {
-                        throw PostCreationException("Failed to create post.")
-                    }
+                val createdPost =
+                    postRepository.createPost(post.user_id, post.title, post.content)
+                if (createdPost != null) {
+                    call.respond(HttpStatusCode.Created, createdPost)
                 } else {
-                    call.respond(HttpStatusCode.BadRequest, " category ID must be provided.")
+                    throw PostCreationException("Failed to create post.")
                 }
+
             }
 
 
@@ -70,8 +66,7 @@ fun Application.configurePostRoutes() {
                     val success = postRepository.editPost(
                         postId,
                         postRequest.title,
-                        postRequest.content,
-                        postRequest.category_id
+                        postRequest.content
                     )
                     if (success) {
                         call.respond(HttpStatusCode.OK)

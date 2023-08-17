@@ -2,6 +2,7 @@ package com.msf.routes
 
 import com.msf.data.model.User
 import com.msf.data.repositories.UsersRepositoryImpl
+import com.msf.domain.exceptions.UserDeletionException
 import com.msf.domain.exceptions.UserNotFoundException
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -13,8 +14,8 @@ import org.koin.ktor.ext.inject
 
 fun Application.configureUsersRoutes() {
 
-   val usersRepository: UsersRepositoryImpl by inject()
-    //val usersRepository = UsersRepositoryImpl()
+    // val usersRepository = MockUsersRepository()
+    val usersRepository: UsersRepositoryImpl by inject()
 
 
     routing {
@@ -56,7 +57,7 @@ fun Application.configureUsersRoutes() {
                     if (success) {
                         call.respond(HttpStatusCode.OK)
                     } else {
-                        call.respond(HttpStatusCode.NotFound)
+                        throw UserNotFoundException("Unable to update with ID $userId")
                     }
                 } else {
                     call.respond(HttpStatusCode.BadRequest)
@@ -70,7 +71,7 @@ fun Application.configureUsersRoutes() {
                     if (success) {
                         call.respond(HttpStatusCode.OK)
                     } else {
-                        call.respond(HttpStatusCode.NotFound)
+                        throw UserDeletionException("Unable to delete post with ID $userId")
                     }
                 } else {
                     call.respond(HttpStatusCode.BadRequest)

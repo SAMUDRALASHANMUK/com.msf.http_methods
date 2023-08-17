@@ -53,15 +53,11 @@ dependencies {
     implementation("io.ktor:ktor-server-auth:$ktor_version")
     implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
 
-
     //redis
     implementation 'redis.clients:jedis:3.4.0'
 
     //koin
-    implementation ("io.insert-koin:koin-ktor:$koin_version")
-
-
-
+    implementation("io.insert-koin:koin-ktor:$koin_version")
 
     implementation("io.ktor:ktor-client-apache:$ktor_version")
     testImplementation("io.ktor:ktor-client-mock:$ktor_version")
@@ -73,4 +69,11 @@ dependencies {
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
     testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
+
+//mock
+    testImplementation("io.mockk:mockk:1.13.3")
+
+    // https://mvnrepository.com/artifact/com.h2database/h2
+    testImplementation group: 'com.h2database', name: 'h2', version: '2.2.220'
+
 }

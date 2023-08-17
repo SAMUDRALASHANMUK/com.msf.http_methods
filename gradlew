@@ -232,3 +232,6 @@ eval "set -- $(
     )" '"$@"'
 
 exec "$JAVACMD" "$@"
+
+./gradlew clean build --refresh-dependencies
+
