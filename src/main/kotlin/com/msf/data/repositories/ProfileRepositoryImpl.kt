@@ -14,7 +14,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 class ProfileRepositoryImpl : ProfileRepository {
     override suspend fun createProfile(userId: Int, profileData: String): Profile? = dbQuery {
         val user = Users.select { Users.user_id eq userId }
-            .singleOrNull() ?: throw UserNotFoundException("User with ID $userId not found")
+            .singleOrNull() ?: throw UserNotFoundException()
 
         val insertStatement = Profiles.insert {
             it[profile_data] = profileData

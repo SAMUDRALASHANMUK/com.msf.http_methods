@@ -1,9 +1,12 @@
 package com.msf.plugins
 
 import com.msf.data.model.UserSession
-import io.ktor.server.application.*
-import io.ktor.server.sessions.*
-import io.ktor.util.*
+import io.ktor.server.application.Application
+import io.ktor.server.application.install
+import io.ktor.server.sessions.Sessions
+import io.ktor.server.sessions.cookie
+import io.ktor.server.sessions.SessionTransportTransformerEncrypt
+import io.ktor.util.hex
 
 fun Application.configureSessions() {
     install(Sessions) {

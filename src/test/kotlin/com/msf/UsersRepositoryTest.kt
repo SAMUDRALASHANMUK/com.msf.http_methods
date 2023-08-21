@@ -1,6 +1,5 @@
 package com.msf
 
-import com.msf.data.MockDatabaseFactory
 import com.msf.data.model.User
 import com.msf.data.repositories.UsersRepositoryImpl
 import com.msf.domain.interfaces.UsersRepository

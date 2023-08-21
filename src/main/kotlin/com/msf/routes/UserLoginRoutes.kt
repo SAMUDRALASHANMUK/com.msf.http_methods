@@ -3,12 +3,18 @@ package com.msf.routes
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.msf.data.model.UserLogin
-import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.server.application.Application
+import io.ktor.server.application.call
+import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.principal
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.response.respondText
+import io.ktor.server.routing.routing
+import io.ktor.server.routing.get
+import io.ktor.server.routing.post
+
 import java.util.*
 
 fun Application.configureUserLoginRoutes() {
@@ -18,8 +24,6 @@ fun Application.configureUserLoginRoutes() {
     routing {
         post("/loginuser") {
             val user = call.receive<UserLogin>()
-            // Check username and password
-            // ...
             val token = JWT.create()
                 .withAudience(audience)
                 .withIssuer(issuer)

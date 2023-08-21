@@ -1,7 +1,7 @@
 package com.msf.data.model
 
 import kotlinx.serialization.Serializable
-import java.util.*
+import java.util.Random
 
 @Serializable
 data class Employee(val id: Int = generateRandomId(), var name: String, val age: Int, val email: String)

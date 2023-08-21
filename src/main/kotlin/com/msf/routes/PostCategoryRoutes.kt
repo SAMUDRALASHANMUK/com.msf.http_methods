@@ -1,12 +1,16 @@
+package com.msf.routes
+
 import com.msf.data.model.PostCategory
-import com.msf.data.model.User
 import com.msf.data.repositories.PostCategoriesRepositoryImpl
 import com.msf.domain.exceptions.PostCategoryCreateException
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.Application
+import io.ktor.server.application.call
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.routing.routing
+import io.ktor.server.routing.get
+import io.ktor.server.routing.post
 import org.koin.ktor.ext.inject
 
 
@@ -45,7 +49,7 @@ fun Application.configurePostCategoryRoutes() {
             if (createdUser != null) {
                 call.respond(HttpStatusCode.Created, createdUser)
             } else {
-                throw PostCategoryCreateException("unable to create post category ")
+                throw PostCategoryCreateException()
             }
         }
     }

@@ -1,13 +1,13 @@
-
 package com.msf.data.methods
 
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.request.*
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
 import java.io.File
-import io.ktor.client.plugins.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
+import io.ktor.client.plugins.onDownload
+import io.ktor.client.statement.HttpResponse
+import io.ktor.http.headers
+import io.ktor.http.HttpHeaders
 
 // Define a suspend function to download a file from a given URL and save it to the local machine
 suspend fun HttpClient.downloadFile(url: String, outFile: File) {
@@ -18,7 +18,7 @@ suspend fun HttpClient.downloadFile(url: String, outFile: File) {
             println("Received $bytesSentTotal bytes from $contentLength")
         }
         headers {
-            append(HttpHeaders.UserAgent, "Mozilla/5.0") // Set a custom user-agent
+            append(HttpHeaders.UserAgent, "Mozilla/5.0")
         }
     }
 
@@ -28,6 +28,7 @@ suspend fun HttpClient.downloadFile(url: String, outFile: File) {
     // Write the received bytes to the specified outFile
     outFile.writeBytes(responseBody)
 }
+
 // Function to get the default filename from a given URL
 fun getDefaultFileName(url: String): File {
     // Extract the filename from the URL by finding the substring after the last "/"

@@ -4,11 +4,18 @@ import com.msf.data.methods.getData
 import com.msf.data.model.Employee
 import com.msf.data.model.list.empList
 import com.msf.domain.exceptions.EmployeeNotFoundException
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.server.application.Application
+import io.ktor.server.application.call
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.response.respondText
+import io.ktor.server.routing.routing
+import io.ktor.server.routing.get
+import io.ktor.server.routing.put
+import io.ktor.server.routing.patch
+import io.ktor.server.routing.delete
+import io.ktor.server.routing.post
 
 fun Application.configureEmpRoutes() {
 

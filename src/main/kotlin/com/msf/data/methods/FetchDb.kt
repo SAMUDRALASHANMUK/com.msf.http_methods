@@ -1,7 +1,15 @@
 package com.msf.data.methods
 
-import com.msf.data.model.*
-import com.msf.data.schemas.*
+import com.msf.data.model.Categorie
+import com.msf.data.model.Post
+import com.msf.data.model.Profile
+import com.msf.data.model.User
+import com.msf.data.model.PostCategory
+import com.msf.data.schemas.Categories
+import com.msf.data.schemas.Posts
+import com.msf.data.schemas.Profiles
+import com.msf.data.schemas.Users
+import com.msf.data.schemas.PostCategories
 import org.jetbrains.exposed.sql.ResultRow
 
 fun resultRowToCategory(row: ResultRow) = Categorie(

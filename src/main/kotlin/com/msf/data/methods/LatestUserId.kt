@@ -1,6 +1,5 @@
 package com.msf.data.methods
 
-import com.msf.data.model.Profile
 import com.msf.data.schemas.Profiles
 import org.jetbrains.exposed.sql.max
 import org.jetbrains.exposed.sql.selectAll

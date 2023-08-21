@@ -4,11 +4,17 @@ import com.msf.data.model.Profile
 import com.msf.data.repositories.ProfileRepositoryImpl
 import com.msf.domain.exceptions.PostCreationException
 import com.msf.domain.exceptions.ProfileNotFoundException
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.server.application.Application
+import io.ktor.server.application.call
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.routing.routing
+import io.ktor.server.routing.route
+import io.ktor.server.routing.get
+import io.ktor.server.routing.put
+import io.ktor.server.routing.delete
+import io.ktor.server.routing.post
 import org.koin.ktor.ext.inject
 
 
@@ -47,7 +53,7 @@ fun Application.configureProfileRoutes() {
                     if (createdProfile != null) {
                         call.respond(HttpStatusCode.Created, createdProfile)
                     } else {
-                        throw PostCreationException("Unable to create post")
+                        throw PostCreationException()
                     }
                 }
             }

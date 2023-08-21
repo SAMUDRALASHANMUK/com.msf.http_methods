@@ -2,8 +2,7 @@ package com.msf.data.methods
 
 import com.msf.data.model.UserSession
 import com.typesafe.config.ConfigFactory
-import io.ktor.server.config.*
-import io.ktor.server.config.ConfigLoader.Companion.load
+import io.ktor.server.config.HoconApplicationConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import redis.clients.jedis.Jedis

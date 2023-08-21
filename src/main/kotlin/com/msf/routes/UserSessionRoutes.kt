@@ -3,10 +3,17 @@ package com.msf.routes
 import com.msf.data.methods.removeSessionFromRedis
 import com.msf.data.methods.saveSessionToRedis
 import com.msf.data.model.UserSession
-import io.ktor.server.application.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
-import io.ktor.server.sessions.*
+import io.ktor.server.application.Application
+import io.ktor.server.routing.routing
+import io.ktor.server.routing.get
+import io.ktor.server.application.call
+import io.ktor.server.response.respondRedirect
+import io.ktor.server.response.respond
+import io.ktor.server.sessions.sessions
+import io.ktor.server.sessions.set
+import io.ktor.server.sessions.get
+import io.ktor.server.sessions.clear
+
 
 fun Application.configureUserSessionRoutes() {
     routing {

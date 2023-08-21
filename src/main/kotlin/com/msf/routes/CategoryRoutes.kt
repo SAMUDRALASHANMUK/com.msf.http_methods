@@ -2,18 +2,22 @@ package com.msf.routes
 
 import com.msf.data.model.Categorie
 import com.msf.data.repositories.CategoryRepositoryImpl
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.server.application.Application
+import io.ktor.server.application.call
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.routing.routing
+import io.ktor.server.routing.route
+import io.ktor.server.routing.get
+import io.ktor.server.routing.put
+import io.ktor.server.routing.delete
+import io.ktor.server.routing.post
 import org.koin.ktor.ext.inject
 
 fun Application.configureCategoryRoutes() {
-
     val categoriesRepository: CategoryRepositoryImpl by inject()
     routing {
-
         route("/categories") {
             get {
                 val categories = categoriesRepository.getAllCategories()
@@ -64,7 +68,6 @@ fun Application.configureCategoryRoutes() {
             }
             delete("/{categoryId}") {
                 val categoryId = call.parameters["categoryId"]?.toIntOrNull()
-
                 if (categoryId != null) {
                     val deleted = categoriesRepository.removeCategory(categoryId)
                     if (deleted) {
@@ -76,7 +79,6 @@ fun Application.configureCategoryRoutes() {
                     call.respond(HttpStatusCode.BadRequest)
                 }
             }
-
         }
     }
 }

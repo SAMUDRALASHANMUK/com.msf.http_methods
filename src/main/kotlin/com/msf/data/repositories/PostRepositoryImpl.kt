@@ -14,7 +14,7 @@ class PostRepositoryImpl : PostRepository {
     override suspend fun createPost(userId: Int, title: String, content: String): Post? = dbQuery {
         // Check if the user with the given userId exists
         Users.select { Users.user_id eq userId }
-            .singleOrNull() ?: throw UserNotFoundException("User with ID $userId not found")
+            .singleOrNull() ?: throw UserNotFoundException()
 
         // The user exists, proceed with creating the post
         val insertStatement = Posts.insert {

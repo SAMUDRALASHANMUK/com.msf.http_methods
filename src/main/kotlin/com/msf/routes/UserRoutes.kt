@@ -4,11 +4,17 @@ import com.msf.data.model.User
 import com.msf.data.repositories.UsersRepositoryImpl
 import com.msf.domain.exceptions.UserDeletionException
 import com.msf.domain.exceptions.UserNotFoundException
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.server.application.Application
+import io.ktor.server.application.call
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.routing.routing
+import io.ktor.server.routing.route
+import io.ktor.server.routing.get
+import io.ktor.server.routing.put
+import io.ktor.server.routing.delete
+import io.ktor.server.routing.post
 import org.koin.ktor.ext.inject
 
 
@@ -32,7 +38,7 @@ fun Application.configureUsersRoutes() {
                     if (user != null) {
                         call.respond(user)
                     } else {
-                        throw UserNotFoundException("User with ID $userId not found")
+                        throw UserNotFoundException()
                     }
                 } else {
                     call.respond(HttpStatusCode.BadRequest)
@@ -57,7 +63,7 @@ fun Application.configureUsersRoutes() {
                     if (success) {
                         call.respond(HttpStatusCode.OK)
                     } else {
-                        throw UserNotFoundException("Unable to update with ID $userId")
+                        throw UserNotFoundException()
                     }
                 } else {
                     call.respond(HttpStatusCode.BadRequest)

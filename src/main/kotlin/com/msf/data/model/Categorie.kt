@@ -4,4 +4,3 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Categorie(val category_id: Int, val category_name: String)
-
