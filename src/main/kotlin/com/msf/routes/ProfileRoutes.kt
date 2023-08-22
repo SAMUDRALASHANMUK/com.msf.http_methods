@@ -4,6 +4,7 @@ import com.msf.data.model.Profile
 import com.msf.data.repositories.ProfileRepositoryImpl
 import com.msf.domain.exceptions.PostCreationException
 import com.msf.domain.exceptions.ProfileNotFoundException
+import com.msf.util.appconstants.ApiEndPoints.PROFILE
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
 import io.ktor.http.HttpStatusCode
@@ -22,7 +23,7 @@ fun Application.configureProfileRoutes() {
 
     val profileRepository: ProfileRepositoryImpl by inject()
     routing {
-        route("/profiles") {
+        route(PROFILE) {
             get("/") {
                 val profiles = profileRepository.getAllProfiles()
                 call.respond(profiles)
@@ -44,12 +45,12 @@ fun Application.configureProfileRoutes() {
 
             post("/") {
                 val profile = call.receive<Profile>()
-                val existingUser = profileRepository.getProfileByUserId(profile.user_id)
+                val existingUser = profileRepository.getProfileByUserId(profile.userId)
 
                 if (existingUser != null) {
                     call.respond("User account already exists.")
                 } else {
-                    val createdProfile = profileRepository.createProfile(profile.user_id, profile.profile_data)
+                    val createdProfile = profileRepository.createProfile(profile.userId, profile.profileData)
                     if (createdProfile != null) {
                         call.respond(HttpStatusCode.Created, createdProfile)
                     } else {
@@ -62,7 +63,7 @@ fun Application.configureProfileRoutes() {
                 val profileId = call.parameters["id"]?.toIntOrNull()
                 if (profileId != null) {
                     val profile = call.receive<Profile>()
-                    val success = profileRepository.editProfile(profileId, profile.profile_data)
+                    val success = profileRepository.editProfile(profileId, profile.profileData)
                     if (success) {
                         call.respond(HttpStatusCode.OK)
                     } else {

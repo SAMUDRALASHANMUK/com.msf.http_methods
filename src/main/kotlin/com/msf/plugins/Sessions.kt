@@ -1,20 +1,25 @@
 package com.msf.plugins
 
 import com.msf.data.model.UserSession
+import com.msf.util.appconstants.GlobalConstants.COOKIE_PATH
+import com.msf.util.appconstants.GlobalConstants.SESSION_COOKIE_MAX_AGE_SECONDS
+import com.msf.util.appconstants.GlobalConstants.SESSION_ENCRYPT_KEY
+import com.msf.util.appconstants.GlobalConstants.SESSION_SIGN_KEY
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.sessions.Sessions
 import io.ktor.server.sessions.cookie
 import io.ktor.server.sessions.SessionTransportTransformerEncrypt
+
 import io.ktor.util.hex
 
 fun Application.configureSessions() {
     install(Sessions) {
-        val secretEncryptKey = hex("00112233445566778899aabbccddeeff")
-        val secretSignKey = hex("6819b57a326945c1968f45236589")
+        val secretEncryptKey = hex(SESSION_ENCRYPT_KEY)
+        val secretSignKey = hex(SESSION_SIGN_KEY)
         cookie<UserSession>("user_session") {
-            cookie.path = "/"
-            cookie.maxAgeInSeconds = 10
+            cookie.path = COOKIE_PATH
+            cookie.maxAgeInSeconds = SESSION_COOKIE_MAX_AGE_SECONDS
             transform(SessionTransportTransformerEncrypt(secretEncryptKey, secretSignKey))
         }
     }

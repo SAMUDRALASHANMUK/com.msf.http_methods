@@ -1,6 +1,6 @@
 package com.msf.data.repositories
 
-import com.msf.dao.DatabaseFactory.dbQuery
+import com.msf.data.DatabaseFactory.dbQuery
 import com.msf.data.methods.resultRowToProfile
 import com.msf.data.model.Profile
 import com.msf.data.schemas.Profiles
@@ -8,12 +8,17 @@ import com.msf.data.schemas.Profiles.user_id
 import com.msf.data.schemas.Users
 import com.msf.domain.exceptions.UserNotFoundException
 import com.msf.domain.interfaces.ProfileRepository
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.sql.selectAll
+
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 class ProfileRepositoryImpl : ProfileRepository {
     override suspend fun createProfile(userId: Int, profileData: String): Profile? = dbQuery {
-        val user = Users.select { Users.user_id eq userId }
+        Users.select { Users.user_id eq userId }
             .singleOrNull() ?: throw UserNotFoundException()
 
         val insertStatement = Profiles.insert {
@@ -53,6 +58,5 @@ class ProfileRepositoryImpl : ProfileRepository {
         val deletedRows = Users.deleteWhere { Users.user_id eq profileId }
         deletedRows > 0
     }
-
 
 }

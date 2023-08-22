@@ -3,6 +3,7 @@ package com.msf.routes
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.msf.data.model.UserLogin
+import com.msf.util.appconstants.GlobalConstants.JWT_TOKEN_EXPIRATION_MS
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
 import io.ktor.server.auth.authenticate
@@ -28,7 +29,7 @@ fun Application.configureUserLoginRoutes() {
                 .withAudience(audience)
                 .withIssuer(issuer)
                 .withClaim("username", user.userName)
-                .withExpiresAt(Date(System.currentTimeMillis() + 60000))
+                .withExpiresAt(Date(System.currentTimeMillis() + JWT_TOKEN_EXPIRATION_MS))
                 .sign(Algorithm.HMAC256(secret))
             call.respond(hashMapOf("token" to token))
         }

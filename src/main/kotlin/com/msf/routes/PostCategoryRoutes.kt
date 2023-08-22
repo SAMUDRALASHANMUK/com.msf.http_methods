@@ -45,7 +45,7 @@ fun Application.configurePostCategoryRoutes() {
         post("/") {
             val postCategory = call.receive<PostCategory>()
             val createdUser =
-                postCategoriesRepository.associatePostWithCategory(postCategory.post_id, postCategory.category_id)
+                postCategoriesRepository.associatePostWithCategory(postCategory.postId, postCategory.categoryId)
             if (createdUser != null) {
                 call.respond(HttpStatusCode.Created, createdUser)
             } else {

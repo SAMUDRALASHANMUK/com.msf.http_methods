@@ -1,11 +1,15 @@
 package com.msf.data.repositories
 
-import com.msf.dao.DatabaseFactory.dbQuery
+import com.msf.data.DatabaseFactory.dbQuery
 import com.msf.data.methods.resultRowToUser
 import com.msf.data.model.User
 import com.msf.data.schemas.Users
 import com.msf.domain.interfaces.UsersRepository
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 open class UsersRepositoryImpl : UsersRepository {
@@ -41,11 +45,7 @@ open class UsersRepositoryImpl : UsersRepository {
     }
 
     override suspend fun deleteUser(userId: Int): Boolean = dbQuery {
-        val deletedRows = Users.deleteWhere { Users.user_id eq userId }
+        val deletedRows = Users.deleteWhere { user_id eq userId }
         deletedRows > 0
     }
 }
-
-
-
-

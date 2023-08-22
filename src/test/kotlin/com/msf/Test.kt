@@ -1,17 +1,11 @@
 package com.msf
 
 import com.msf.data.model.User
-import com.msf.data.repositories.MockUsersRepository
-import io.ktor.client.request.get
-import io.ktor.client.request.post
-import io.ktor.client.request.put
-import io.ktor.client.request.delete
-import io.ktor.client.request.setBody
-import io.ktor.client.statement.bodyAsText
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.HttpHeaders
-import io.ktor.http.ContentType
-import io.ktor.server.testing.testApplication
+import com.msf.data.repositories.UsersRepositoryImpl
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
+import io.ktor.server.testing.*
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.serialization.encodeToString
@@ -19,10 +13,9 @@ import kotlinx.serialization.json.Json
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class UserMockTests {
+class Test {
 
-
-    private val usersRepository = mockk<MockUsersRepository>()
+    private val usersRepository = mockk<UsersRepositoryImpl>()
 
     @Test
     fun testGetAllUsers() = testApplication {
@@ -78,10 +71,11 @@ class UserMockTests {
             "user4@example.com"
         )
 
-        val response = client.post("/users/") {
+        val response = client.post("/users") {
             setBody(Json.encodeToString(User(4, "shanmuk", "user4@example.com")))
             headers[HttpHeaders.ContentType] = ContentType.Application.Json.toString()
         }
+        println(response.bodyAsText())
         assertEquals(HttpStatusCode.Created, response.status)
 
         val expectedUser = User(4, "shanmuk", "user4@example.com")

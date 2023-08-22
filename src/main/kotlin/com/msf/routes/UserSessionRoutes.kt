@@ -1,7 +1,7 @@
 package com.msf.routes
 
-import com.msf.data.methods.removeSessionFromRedis
-import com.msf.data.methods.saveSessionToRedis
+import com.msf.util.redis.removeSessionFromRedis
+import com.msf.util.redis.saveSessionToRedis
 import com.msf.data.model.UserSession
 import io.ktor.server.application.Application
 import io.ktor.server.routing.routing
@@ -37,7 +37,6 @@ fun Application.configureUserSessionRoutes() {
                 // Remove the userSession from Redis
                 removeSessionFromRedis(userSession.sessionId)
             }
-
             call.sessions.clear<UserSession>()
             call.respondRedirect("/user")
         }

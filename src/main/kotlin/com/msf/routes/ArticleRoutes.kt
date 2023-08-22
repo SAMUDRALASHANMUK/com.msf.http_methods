@@ -2,6 +2,7 @@ package com.msf.routes
 
 import com.msf.data.model.Article
 import com.msf.data.repositories.ArticlesRepositoryImpl
+import com.msf.util.appconstants.ApiEndPoints.ARTICLE
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.application.Application
@@ -19,7 +20,7 @@ fun Application.configureArticleRoutes() {
     val articlesRepository: ArticlesRepositoryImpl by inject()
 
     routing {
-        route("/articles") {
+        route(ARTICLE) {
 
             get("/") {
                 call.respond(articlesRepository.allArticles())

@@ -3,4 +3,4 @@ package com.msf.data.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class User(var user_id: Int=1, var user_name: String, var email: String)
+data class User(var userId: Int=1, var userName: String, var email: String)

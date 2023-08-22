@@ -46,7 +46,7 @@ fun Application.configureStatusPages() {
         }
         status(HttpStatusCode.NotFound) { call, status ->
             call.respondText(
-                "Oops! It seems the page you're looking for cannot be found. Please check the URL or try navigating back to the previous page",
+                "Oops! It seems the page you're looking for cannot be found.",
                 status = status
             )
         }

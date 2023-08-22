@@ -1,15 +1,19 @@
 package com.msf.data.repositories
 
-import com.msf.dao.DatabaseFactory.dbQuery
+import com.msf.data.DatabaseFactory.dbQuery
 import com.msf.data.methods.resultRowToCategory
-import com.msf.data.model.Categorie
+import com.msf.data.model.Category
 import com.msf.data.schemas.Categories
 import com.msf.domain.interfaces.CategoryRepository
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 class CategoryRepositoryImpl : CategoryRepository {
-    override suspend fun addCategory(categoryName: String): Categorie? = dbQuery {
+    override suspend fun addCategory(categoryName: String): Category? = dbQuery {
         // Insert the new category into the Categories table
         val insertStatement = Categories.insert {
             it[category_name] = categoryName
@@ -18,11 +22,11 @@ class CategoryRepositoryImpl : CategoryRepository {
     }
 
 
-    override suspend fun getAllCategories(): List<Categorie> = dbQuery {
+    override suspend fun getAllCategories(): List<Category> = dbQuery {
         Categories.selectAll().map(::resultRowToCategory)
     }
 
-    override suspend fun getCategoryById(categoryId: Int): Categorie? = dbQuery {
+    override suspend fun getCategoryById(categoryId: Int): Category? = dbQuery {
         Categories
             .select { Categories.category_id eq categoryId }
             .map(::resultRowToCategory)

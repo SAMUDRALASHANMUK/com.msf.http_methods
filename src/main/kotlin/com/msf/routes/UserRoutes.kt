@@ -4,6 +4,8 @@ import com.msf.data.model.User
 import com.msf.data.repositories.UsersRepositoryImpl
 import com.msf.domain.exceptions.UserDeletionException
 import com.msf.domain.exceptions.UserNotFoundException
+import com.msf.util.appconstants.ApiEndPoints
+import com.msf.util.appconstants.ApiEndPoints.USER
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
 import io.ktor.http.HttpStatusCode
@@ -23,10 +25,9 @@ fun Application.configureUsersRoutes() {
     // val usersRepository = MockUsersRepository()
     val usersRepository: UsersRepositoryImpl by inject()
 
-
     routing {
-        route("/users") {
-            get("/") {
+        route(USER) {
+            get {
                 val users = usersRepository.getAllUsers()
                 call.respond(users)
             }
@@ -45,9 +46,9 @@ fun Application.configureUsersRoutes() {
                 }
             }
 
-            post("/") {
+            post {
                 val user = call.receive<User>()
-                val createdUser = usersRepository.createUser(user.user_name, user.email)
+                val createdUser = usersRepository.createUser(user.userName, user.email)
                 if (createdUser != null) {
                     call.respond(HttpStatusCode.Created, createdUser)
                 } else {
@@ -59,7 +60,7 @@ fun Application.configureUsersRoutes() {
                 val userId = call.parameters["id"]?.toIntOrNull()
                 if (userId != null) {
                     val user = call.receive<User>()
-                    val success = usersRepository.editUser(userId, user.user_name, user.email)
+                    val success = usersRepository.editUser(userId, user.userName, user.email)
                     if (success) {
                         call.respond(HttpStatusCode.OK)
                     } else {
@@ -86,3 +87,4 @@ fun Application.configureUsersRoutes() {
         }
     }
 }
+

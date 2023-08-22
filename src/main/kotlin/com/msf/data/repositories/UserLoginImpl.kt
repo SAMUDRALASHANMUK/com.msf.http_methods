@@ -1,6 +1,6 @@
 package com.msf.data.repositories
 
-import com.msf.dao.DatabaseFactory.dbQuery
+import com.msf.data.DatabaseFactory.dbQuery
 import com.msf.data.model.UserLogin
 import com.msf.data.schemas.UserLoginTable
 import com.msf.domain.interfaces.UserLoginRepository

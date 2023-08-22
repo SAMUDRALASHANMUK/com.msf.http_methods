@@ -1,8 +1,14 @@
-package com.msf.dao
+package com.msf.data
 
-import com.msf.data.schemas.*
+import com.msf.data.schemas.Articles
+import com.msf.data.schemas.Users
+import com.msf.data.schemas.Posts
+import com.msf.data.schemas.Profiles
+import com.msf.data.schemas.Categories
+import com.msf.data.schemas.PostCategories
+import com.msf.data.schemas.UserLoginTable
 import com.typesafe.config.ConfigFactory
-import io.ktor.server.config.*
+import io.ktor.server.config.HoconApplicationConfig
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils

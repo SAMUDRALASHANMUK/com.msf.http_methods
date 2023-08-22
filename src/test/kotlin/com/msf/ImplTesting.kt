@@ -1,7 +1,17 @@
 package com.msf
 
-import com.msf.data.model.*
-import com.msf.data.repositories.*
+import com.msf.data.model.User
+import com.msf.data.model.Post
+import com.msf.data.model.Article
+import com.msf.data.model.Profile
+import com.msf.data.model.Category
+import com.msf.data.model.UserLogin
+import com.msf.data.repositories.PostCategoriesRepositoryImpl
+import com.msf.data.repositories.ArticlesRepositoryImpl
+import com.msf.data.repositories.CategoryRepositoryImpl
+import com.msf.data.repositories.PostRepositoryImpl
+import com.msf.data.repositories.ProfileRepositoryImpl
+import com.msf.data.repositories.UsersRepositoryImpl
 import com.msf.domain.interfaces.UserLoginRepository
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -9,7 +19,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class UsersRepositoryTest1 {
+class ImplTesting {
 
     private val mockUserRepository: UsersRepositoryImpl = mockk()
     private val mockProfileRepository: ProfileRepositoryImpl = mockk()
@@ -22,7 +32,7 @@ class UsersRepositoryTest1 {
     private val testUser = User(1, "testuser", "test@example.com")
     private val testProfile = Profile(1, 1, "Some profile data")
     private val testPost = Post(1, 1, "some title", "Some Content")
-    private val testCategory = Categorie(1, "some category")
+    private val testCategory = Category(1, "some category")
     private val testArticle = Article(1, "some title", "some body")
     private val testUserLogin = UserLogin("testuser", "testpassword")
 
@@ -227,3 +237,5 @@ class UsersRepositoryTest1 {
         assertEquals(testUserLogin, result)
     }
 }
+
+

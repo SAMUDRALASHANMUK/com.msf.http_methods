@@ -1,13 +1,17 @@
 package com.msf.data.repositories
 
-import com.msf.dao.DatabaseFactory.dbQuery
+import com.msf.data.DatabaseFactory.dbQuery
 import com.msf.data.methods.resultRowToPost
 import com.msf.data.model.Post
 import com.msf.data.schemas.Posts
 import com.msf.data.schemas.Users
 import com.msf.domain.exceptions.UserNotFoundException
 import com.msf.domain.interfaces.PostRepository
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 class PostRepositoryImpl : PostRepository {

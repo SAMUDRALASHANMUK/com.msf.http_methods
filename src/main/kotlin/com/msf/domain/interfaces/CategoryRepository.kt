@@ -1,18 +1,18 @@
 package com.msf.domain.interfaces
 
-import com.msf.data.model.Categorie
+import com.msf.data.model.Category
 
 interface CategoryRepository {
 
 
     // Add a new category
-    suspend fun addCategory(categoryName: String): Categorie?
+    suspend fun addCategory(categoryName: String): Category?
 
     // Get all categories
-    suspend fun getAllCategories(): List<Categorie>
+    suspend fun getAllCategories(): List<Category>
 
     // Get a category by its ID
-    suspend fun getCategoryById(categoryId: Int): Categorie?
+    suspend fun getCategoryById(categoryId: Int): Category?
 
     // Update an existing category
     suspend fun updateCategory(categoryId: Int, categoryName: String): Boolean

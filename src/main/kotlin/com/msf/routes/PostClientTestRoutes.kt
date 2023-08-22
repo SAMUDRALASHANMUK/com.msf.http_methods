@@ -8,7 +8,6 @@ import io.ktor.server.routing.routing
 import io.ktor.server.routing.get
 
 
-
 fun Application.configurePostClientRoutes() {
     routing {
         get("/postClientTest") {

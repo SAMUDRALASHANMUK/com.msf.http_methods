@@ -1,10 +1,10 @@
 package com.msf.data.repositories
 
-import com.msf.dao.DatabaseFactory.dbQuery
+import com.msf.data.DatabaseFactory.dbQuery
 import com.msf.data.methods.resultPostCategory
 import com.msf.data.methods.resultRowToCategory
 import com.msf.data.methods.resultRowToPost
-import com.msf.data.model.Categorie
+import com.msf.data.model.Category
 import com.msf.data.model.Post
 import com.msf.data.schemas.Categories
 import com.msf.data.schemas.PostCategories
@@ -25,7 +25,7 @@ class PostCategoriesRepositoryImpl : PostCategoriesRepository {
         }
     }
 
-    override suspend fun getCategoriesForPost(postId: Int): List<Categorie> = dbQuery {
+    override suspend fun getCategoriesForPost(postId: Int): List<Category> = dbQuery {
         return@dbQuery transaction {
             (PostCategories innerJoin Categories)
                 .select(PostCategories.post_id eq postId)

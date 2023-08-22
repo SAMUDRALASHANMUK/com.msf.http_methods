@@ -42,7 +42,7 @@ class ApplicationTest {
         }
         assertEquals(HttpStatusCode.Created, response.status)
         val responseUser = Json.decodeFromString<User>(response.bodyAsText())
-        assertEquals(user1.copy(user_id = responseUser.user_id), responseUser)
+        assertEquals(user1.copy(userId = responseUser.userId), responseUser)
 
         println(responseUser)
     }
@@ -104,7 +104,7 @@ class ApplicationTest {
         assertEquals(HttpStatusCode.OK, response.status)
         val responseProfile = Json.decodeFromString<Profile>(response.bodyAsText())
         // assertEquals(profile1, responseProfile)
-        assertEquals(profile1.copy(profile_id = responseProfile.profile_id), responseProfile)
+        assertEquals(profile1.copy(profileId = responseProfile.profileId), responseProfile)
     }
 
     @Test
@@ -161,7 +161,7 @@ class ApplicationTest {
         val responsePost = Json.decodeFromString<Post>(response.bodyAsText())
         assertEquals(HttpStatusCode.Created, response.status)
         //assertEquals(postUser, responsePost)
-        assertEquals(postUser.copy(post_id = responsePost.post_id), responsePost)
+        assertEquals(postUser.copy(postId = responsePost.postId), responsePost)
     }
 
     @Test
@@ -224,13 +224,13 @@ class ApplicationTest {
         }
         assertEquals(HttpStatusCode.OK, response.status)
         val userList = Json.decodeFromString<List<Employee>>(response.bodyAsText())
-        assertEquals(list.empList, userList)
+        assertEquals(Employee.empList, userList)
     }
 
     @Test
     fun `test GET post by ID should return the correct employee`() = testApplication {
         val employe1 = Employee(1, "shanmuk", 21, "shanmuk2017@gmail.com")
-        list.empList.add(employe1)
+        Employee.empList.add(employe1)
         val updatedEmp = Employee(1, "updated name", 21, "shanmuk2017@gmail.com")
         val response = client.get("posts/7") {
             headers[HttpHeaders.ContentType] = ContentType.Application.Json.toString()
@@ -247,7 +247,7 @@ class ApplicationTest {
             module()
         }
         val employee = Employee(3, "John", 22, "john@example.com")
-        list.empList.add(employee)
+        Employee.empList.add(employee)
         val response = client.delete("/") {
             headers[HttpHeaders.ContentType] = ContentType.Application.Json.toString()
         }
@@ -259,7 +259,7 @@ class ApplicationTest {
     fun `test PUT should update the employee`() = testApplication {
 
         val employee = Employee(3, "John", 22, "john@example.com")
-        list.empList.add(employee)
+        Employee.empList.add(employee)
         val updatedEmp = Employee(3, "new name", 22, "john@example.com")
         val serializedUser = Json.encodeToString(updatedEmp)
         val response = client.put("users/1") {
@@ -276,7 +276,7 @@ class ApplicationTest {
     fun `test PATCH should update the employee`() = testApplication {
 
         val employee = Employee(3, "John", 22, "john@example.com")
-        list.empList.add(employee)
+        Employee.empList.add(employee)
 
         val updatedFields = mapOf(
             "name" to "new name",
@@ -291,7 +291,7 @@ class ApplicationTest {
 
         assertEquals(HttpStatusCode.OK, response.status)
 
-        val updatedEmpInList = list.empList.find { it.id == employee.id }
+        val updatedEmpInList = Employee.empList.find { it.id == employee.id }
 
         updatedEmpInList!!.apply {
             name = updatedFields["name"] as String
@@ -304,16 +304,16 @@ class ApplicationTest {
     @Test
     fun `test POST should add a new category`() = testApplication {
 
-        val category = Categorie(8, "shanmuk1")
+        val category = Category(8, "shanmuk1")
         val serializedCategory = Json.encodeToString(category)
         val response = client.post("/categories") {
             headers[HttpHeaders.ContentType] = ContentType.Application.Json.toString()
             setBody(serializedCategory)
         }
         assertEquals(HttpStatusCode.Created, response.status)
-        val deserializedCategorie = Json.decodeFromString<Categorie>(response.bodyAsText())
-        //assertEquals(deserializedCategorie, categorie)
-        assertEquals(category.copy(category_id = deserializedCategorie.category_id), deserializedCategorie)
+        val deserializedCategory = Json.decodeFromString<Category>(response.bodyAsText())
+        //assertEquals(deserializedCategory, category)
+        assertEquals(category.copy(categoryId = deserializedCategory.categoryId), deserializedCategory)
     }
 
     @Test
@@ -328,11 +328,11 @@ class ApplicationTest {
 
     @Test
     fun `test GET Categorie by ID should return the correct categorie`() = testApplication {
-        val category = Categorie(1, "shanmuk1")
+        val category = Category(1, "shanmuk1")
         val response = client.get("/categories/1") {
             headers[HttpHeaders.ContentType] = ContentType.Application.Json.toString()
         }
-        val deserializedCategory = Json.decodeFromString<Categorie>(response.bodyAsText())
+        val deserializedCategory = Json.decodeFromString<Category>(response.bodyAsText())
         assertEquals(HttpStatusCode.OK, response.status)
         assertEquals(category, deserializedCategory)
     }
@@ -353,7 +353,7 @@ class ApplicationTest {
     @Test
     fun `test PUT should update the categorie`() = testApplication {
 
-        val updatedCategory = Categorie(7, "updated name")
+        val updatedCategory = Category(7, "updated name")
         val serializedCategory = Json.encodeToString(updatedCategory)
         val categoryId = 7
         val response = client.put("categories/$categoryId") {

@@ -1,6 +1,6 @@
 package com.msf
 
-import com.msf.dao.DatabaseFactory
+import com.msf.data.DatabaseFactory
 import com.msf.plugins.configureSecurity
 import com.msf.plugins.configureContentNegotiation
 import com.msf.plugins.configureSessions
