@@ -1,5 +1,6 @@
 package com.msf.services
 
+import com.msf.config.status.PostCreateException
 import com.msf.config.status.PostDeleteException
 import com.msf.config.status.PostNotFoundException
 import com.msf.model.Post
@@ -14,7 +15,7 @@ class PostService {
 
     suspend fun createPost(post: Post): Post {
         val post = postRepositoryImpl.createPost(post.userId, post.title, post.content)
-        return post ?: throw PostCreationException()
+        return post ?: throw PostCreateException()
     }
 
     suspend fun getPostById(id: Int): Post {
