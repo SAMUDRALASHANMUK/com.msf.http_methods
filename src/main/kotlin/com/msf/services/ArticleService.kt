@@ -1,5 +1,6 @@
 package com.msf.services
 
+import com.msf.config.status.ArticleCreateException
 import com.msf.config.status.ArticleNotFoundException
 import com.msf.model.Article
 import com.msf.model.CreateArticleResponse
@@ -21,13 +22,9 @@ class ArticleService {
         }
     }
 
-    suspend fun createArticle(article: Article): CreateArticleResponse {
+    suspend fun createArticle(article: Article): Article {
         val article = articlesRepositoryImpl.addNewArticle(article.title, article.body)
-        return if (article != null) {
-            CreateArticleResponse(HttpStatusCode.Created, article)
-        } else {
-            CreateArticleResponse(HttpStatusCode.Conflict, null)
-        }
+        return article ?: throw ArticleCreateException()
 
     }
 

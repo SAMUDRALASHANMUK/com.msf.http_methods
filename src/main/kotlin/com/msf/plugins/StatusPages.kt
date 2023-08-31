@@ -13,25 +13,6 @@ fun Application.configureStatusPages() {
     install(StatusPages) {
         exception<Throwable> { call, cause ->
             when (cause) {
-                is EmployeeException -> call.respondText(
-                    "${cause.message}",
-                    status = HttpStatusCode.NotFound
-                )
-
-                is PostNotFoundException -> call.respondText(
-                    "Post not found: ${cause.message}",
-                    status = HttpStatusCode.BadRequest
-                )
-
-                is ProfileNotFoundException -> call.respondText(
-                    "Profile not found: ${cause.message}",
-                    status = HttpStatusCode.BadRequest
-                )
-
-                is UserNotFoundException -> call.respondText(
-                    "User not found: ${cause.message}",
-                    status = HttpStatusCode.NotFound
-                )
 
                 is ExposedSQLException -> call.respondText(
                     "Data Base Error: ${cause.message}",
@@ -39,8 +20,12 @@ fun Application.configureStatusPages() {
                 )
 
                 is IllegalStateException -> call.respond(HttpStatusCode.BadRequest, "Bad request: ${cause.message}")
-                is UserDeletionException -> call.respond(HttpStatusCode.NotFound, message = " ${cause.message}")
-                is ArticleCreationException -> call.respondText(
+
+
+
+
+
+                is ArticleCreateException -> call.respondText(
                     " ${cause.message}",
                     status = HttpStatusCode.NotFound
                 )
@@ -50,15 +35,6 @@ fun Application.configureStatusPages() {
                     status = HttpStatusCode.NotFound
                 )
 
-                is CategoryException -> call.respondText(
-                    " ${cause.message}",
-                    status = HttpStatusCode.NotFound
-                )
-
-                is EmployeeException -> call.respondText(
-                    " ${cause.message}",
-                    status = HttpStatusCode.NotFound
-                )
 
                 is PostCategoryException -> call.respondText(
                     " ${cause.message}",
@@ -69,15 +45,24 @@ fun Application.configureStatusPages() {
                     " ${cause.message}",
                     status = HttpStatusCode.NotFound
                 )
-
-                is PostCreationException -> call.respondText(
+                is CategoryCreateException -> call.respondText(
                     " ${cause.message}",
                     status = HttpStatusCode.NotFound
                 )
 
-                is PostDeleteException -> call.respondText(
+                is CategoryUpdateException -> call.respondText(
                     " ${cause.message}",
                     status = HttpStatusCode.NotFound
+                )
+
+                is CategoryDeleteException -> call.respondText(
+                    " ${cause.message}",
+                    status = HttpStatusCode.NotFound
+                )
+
+                is CategoryNotFoundException -> call.respondText(
+                    "${cause.message}",
+                    status = HttpStatusCode.BadRequest
                 )
 
                 is ProfileCreateException -> call.respondText(
@@ -85,10 +70,85 @@ fun Application.configureStatusPages() {
                     status = HttpStatusCode.NotFound
                 )
 
+                is ProfileUpdateException -> call.respondText(
+                    " ${cause.message}",
+                    status = HttpStatusCode.NotFound
+                )
+
+                is ProfileDeleteException -> call.respondText(
+                    " ${cause.message}",
+                    status = HttpStatusCode.NotFound
+                )
+
+                is ProfileNotFoundException -> call.respondText(
+                    "${cause.message}",
+                    status = HttpStatusCode.BadRequest
+                )
+
+                is UserCreateException -> call.respondText(
+                    "${cause.message}",
+                    status = HttpStatusCode.NotFound
+                )
+
+                is UserUpdateException -> call.respondText(
+                    "${cause.message}",
+                    status = HttpStatusCode.NotFound
+                )
+
+                is UserDeleteException -> call.respondText(
+                    "${cause.message}",
+                    status = HttpStatusCode.NotFound
+                )
+
+                is UserNotFoundException -> call.respondText(
+                    "${cause.message}",
+                    status = HttpStatusCode.NotFound
+                )
+
+                is PostCreateException -> call.respondText(
+                    "${cause.message}",
+                    status = HttpStatusCode.BadRequest
+                )
+
+                is PostUpdateException -> call.respondText(
+                    "${cause.message}",
+                    status = HttpStatusCode.BadRequest
+                )
+
+                is PostDeleteException -> call.respondText(
+                    "${cause.message}",
+                    status = HttpStatusCode.BadRequest
+                )
+
+                is PostNotFoundException -> call.respondText(
+                    "${cause.message}",
+                    status = HttpStatusCode.NotFound
+                )
+
+                is EmployeeCreateException -> call.respondText(
+                    " ${cause.message}",
+                    status = HttpStatusCode.NotFound
+                )
+
+                is EmployeeUpdateException -> call.respondText(
+                    " ${cause.message}",
+                    status = HttpStatusCode.NotFound
+                )
+
+                is EmployeeDeleteException -> call.respondText(
+                    " ${cause.message}",
+                    status = HttpStatusCode.NotFound
+                )
+
+                is EmployeeNotFoundException -> call.respondText(
+                    "${cause.message}",
+                    status = HttpStatusCode.BadRequest
+                )
+
+
                 else -> call.respondText(
                     text = "${cause.message}",
                 )
-
 
             }
         }

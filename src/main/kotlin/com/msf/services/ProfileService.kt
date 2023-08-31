@@ -1,7 +1,9 @@
 package com.msf.services
 
 import com.msf.config.status.ProfileCreateException
+import com.msf.config.status.ProfileDeleteException
 import com.msf.config.status.ProfileNotFoundException
+import com.msf.config.status.ProfileUpdateException
 import com.msf.model.Profile
 import com.msf.repository.ProfileRepositoryImpl
 import io.ktor.http.*
@@ -30,7 +32,7 @@ class ProfileService {
         return if (response) {
             HttpStatusCode.OK
         } else {
-            throw ProfileNotFoundException()
+            throw ProfileUpdateException()
         }
     }
 
@@ -39,7 +41,7 @@ class ProfileService {
         return if (response) {
             HttpStatusCode.OK
         } else {
-            throw ProfileNotFoundException()
+            throw ProfileDeleteException()
         }
 
     }

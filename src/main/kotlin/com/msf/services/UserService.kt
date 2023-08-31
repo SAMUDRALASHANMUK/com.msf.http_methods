@@ -1,13 +1,14 @@
 package com.msf.services
 
-import com.msf.config.status.UserDeletionException
+import com.msf.config.status.UserCreateException
+import com.msf.config.status.UserDeleteException
 import com.msf.config.status.UserNotFoundException
-import com.msf.model.CreateUserResponse
+import com.msf.config.status.UserUpdateException
 import com.msf.model.User
 import com.msf.repository.UsersRepositoryImpl
 import io.ktor.http.*
 
-class UserService() {
+class UserService {
 
     private val usersRepository = UsersRepositoryImpl()
     suspend fun getAllUsers(): List<User> {
@@ -16,20 +17,12 @@ class UserService() {
 
     suspend fun getUserById(userId: Int): User {
         val user = usersRepository.getUserById(userId)
-        if (user != null) {
-            return user
-        } else {
-            throw UserNotFoundException()
-        }
+        return user ?: throw UserNotFoundException()
     }
 
-    suspend fun createUser(user: User): CreateUserResponse {
+    suspend fun createUser(user: User): User {
         val createdUser = usersRepository.createUser(user.userName, user.email)
-        return if (createdUser != null) {
-            CreateUserResponse(HttpStatusCode.Created, createdUser)
-        } else {
-            CreateUserResponse(HttpStatusCode.InternalServerError, null)
-        }
+        return createdUser ?: throw UserCreateException()
     }
 
     suspend fun updateUser(userId: Int, user: User): HttpStatusCode {
@@ -37,17 +30,16 @@ class UserService() {
         return if (success) {
             HttpStatusCode.OK
         } else {
-            throw UserNotFoundException()
+            throw UserUpdateException()
         }
     }
-
 
     suspend fun deleteUser(userId: Int): HttpStatusCode {
         val success = usersRepository.deleteUser(userId)
         return if (success) {
             HttpStatusCode.OK
         } else {
-            throw UserDeletionException()
+            throw UserDeleteException()
         }
     }
 }

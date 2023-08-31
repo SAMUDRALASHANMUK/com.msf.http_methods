@@ -1,6 +1,6 @@
 package com.msf.services
 
-import com.msf.config.status.CategoryException
+import com.msf.config.status.*
 import com.msf.model.Category
 import com.msf.repository.CategoryRepositoryImpl
 import io.ktor.http.*
@@ -13,12 +13,12 @@ class CategoryService {
 
     suspend fun getCategoryById(id: Int): Category {
         val response = categoryRepositoryImpl.getCategoryById(id)
-        return response ?: throw CategoryException()
+        return response ?: throw CategoryNotFoundException()
     }
 
     suspend fun createCategory(category: Category): Category {
         val response = categoryRepositoryImpl.addCategory(category.categoryName)
-        return response ?: throw CategoryException()
+        return response ?: throw CategoryCreateException()
     }
 
     suspend fun updateCategory(id: Int, category: Category): HttpStatusCode {
@@ -26,7 +26,7 @@ class CategoryService {
         return if (response) {
             HttpStatusCode.OK
         } else {
-            throw CategoryException()
+            throw CategoryUpdateException()
         }
     }
 
@@ -35,7 +35,7 @@ class CategoryService {
         return if (response) {
             HttpStatusCode.OK
         } else {
-            throw CategoryException()
+            throw CategoryDeleteException()
         }
     }
 }

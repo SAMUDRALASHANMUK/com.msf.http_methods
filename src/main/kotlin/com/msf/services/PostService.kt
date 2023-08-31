@@ -1,6 +1,5 @@
 package com.msf.services
 
-import com.msf.config.status.PostCreationException
 import com.msf.config.status.PostDeleteException
 import com.msf.config.status.PostNotFoundException
 import com.msf.model.Post
