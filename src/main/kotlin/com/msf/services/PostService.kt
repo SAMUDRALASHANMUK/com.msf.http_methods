@@ -14,8 +14,8 @@ class PostService {
     }
 
     suspend fun createPost(post: Post): Post {
-        val post = postRepositoryImpl.createPost(post.userId, post.title, post.content)
-        return post ?: throw PostCreateException()
+        val response = postRepositoryImpl.createPost(post.userId, post.title, post.content)
+        return response ?: throw PostCreateException()
     }
 
     suspend fun getPostById(id: Int): Post {
