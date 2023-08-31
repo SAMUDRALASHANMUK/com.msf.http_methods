@@ -2,7 +2,7 @@ package com.msf.routes
 
 import com.msf.util.redis.removeSessionFromRedis
 import com.msf.util.redis.saveSessionToRedis
-import com.msf.data.model.UserSession
+import com.msf.model.UserSession
 import io.ktor.server.application.Application
 import io.ktor.server.routing.routing
 import io.ktor.server.routing.get

@@ -1,8 +1,10 @@
 package com.msf.routes
 
-import com.msf.data.model.PostCategory
-import com.msf.data.repositories.PostCategoriesRepositoryImpl
-import com.msf.domain.exceptions.PostCategoryCreateException
+import com.msf.model.PostCategory
+import com.msf.repository.PostCategoriesRepositoryImpl
+import com.msf.services.PostCategoryService
+import com.msf.util.appconstants.ApiEndPoints.CATEGORY_POSTS_PATH
+import com.msf.util.appconstants.ApiEndPoints.POST_CATEGORIES_PATH
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
@@ -13,44 +15,33 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import org.koin.ktor.ext.inject
 
-
 fun Application.configurePostCategoryRoutes() {
 
-    val postCategoriesRepository: PostCategoriesRepositoryImpl by inject()
+    val postCategoryService: PostCategoryService by inject()
 
     routing {
-        get("/categories/{category_id}/posts") {
-            val categoryId = call.parameters["category_id"]?.toIntOrNull()
+        get(CATEGORY_POSTS_PATH) {
+            val categoryId = call.parameters["category_id"]?.toIntOrNull() ?: return@get call.respond(
+                HttpStatusCode.BadRequest,
+                "please provide category_id"
+            )
 
-            if (categoryId == null) {
-                call.respond(HttpStatusCode.BadRequest, "Invalid category_id")
-                return@get
-            }
-
-            val associatedPosts = postCategoriesRepository.getPostsForCategory(categoryId)
+            val associatedPosts = postCategoryService.getPostsForCategory(categoryId)
             call.respond(HttpStatusCode.OK, associatedPosts)
         }
 
-        get("/posts/{post_id}/categories") {
-            val postId = call.parameters["post_id"]?.toIntOrNull()
-
-            if (postId == null) {
-                call.respond(HttpStatusCode.BadRequest, "Invalid post_id")
-                return@get
-            }
-
-            val associatedCategories = postCategoriesRepository.getCategoriesForPost(postId)
+        get(POST_CATEGORIES_PATH) {
+            val postId = call.parameters["post_id"]?.toIntOrNull() ?: return@get call.respond(
+                HttpStatusCode.BadRequest,
+                "Please provide post id"
+            )
+            val associatedCategories = postCategoryService.getCategoriesForPost(postId)
             call.respond(HttpStatusCode.OK, associatedCategories)
         }
-        post("/") {
+        post {
             val postCategory = call.receive<PostCategory>()
-            val createdUser =
-                postCategoriesRepository.associatePostWithCategory(postCategory.postId, postCategory.categoryId)
-            if (createdUser != null) {
-                call.respond(HttpStatusCode.Created, createdUser)
-            } else {
-                throw PostCategoryCreateException()
-            }
+            val response = postCategoryService.createPostCategory(postCategory)
+            call.respond(response)
         }
     }
 }

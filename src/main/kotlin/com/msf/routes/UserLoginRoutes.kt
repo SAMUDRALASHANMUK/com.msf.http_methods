@@ -2,7 +2,7 @@ package com.msf.routes
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.msf.data.model.UserLogin
+import com.msf.model.UserLogin
 import com.msf.util.appconstants.GlobalConstants.JWT_TOKEN_EXPIRATION_MS
 import io.ktor.server.application.Application
 import io.ktor.server.application.call

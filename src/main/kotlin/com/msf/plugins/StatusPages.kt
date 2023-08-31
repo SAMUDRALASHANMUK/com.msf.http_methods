@@ -1,10 +1,6 @@
 package com.msf.plugins
 
-import com.msf.domain.exceptions.EmployeeNotFoundException
-import com.msf.domain.exceptions.PostNotFoundException
-import com.msf.domain.exceptions.ProfileNotFoundException
-import com.msf.domain.exceptions.UserNotFoundException
-import com.msf.domain.exceptions.UserDeletionException
+import com.msf.config.status.*
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
@@ -17,9 +13,9 @@ fun Application.configureStatusPages() {
     install(StatusPages) {
         exception<Throwable> { call, cause ->
             when (cause) {
-                is EmployeeNotFoundException -> call.respondText(
-                    "Employee not found: ${cause.message}",
-                    status = HttpStatusCode.BadRequest
+                is EmployeeException -> call.respondText(
+                    "${cause.message}",
+                    status = HttpStatusCode.NotFound
                 )
                 is PostNotFoundException -> call.respondText(
                     "Post not found: ${cause.message}",

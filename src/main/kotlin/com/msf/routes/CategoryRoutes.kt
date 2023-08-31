@@ -1,9 +1,11 @@
 package com.msf.routes
 
-
-import com.msf.data.model.Category
-import com.msf.data.repositories.CategoryRepositoryImpl
+import com.msf.model.Category
+import com.msf.services.CategoryService
 import com.msf.util.appconstants.ApiEndPoints.CATEGORY
+import com.msf.util.appconstants.ApiEndPoints.DELETE_CATEGORY
+import com.msf.util.appconstants.ApiEndPoints.GET_CATEGORY
+import com.msf.util.appconstants.ApiEndPoints.UPDATE_CATEGORY
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
 import io.ktor.http.HttpStatusCode
@@ -19,60 +21,39 @@ import io.ktor.server.routing.post
 import org.koin.ktor.ext.inject
 
 fun Application.configureCategoryRoutes() {
-    val categoriesRepository: CategoryRepositoryImpl by inject()
+    val categoryService: CategoryService by inject()
     routing {
         route(CATEGORY) {
             get {
-                val categories = categoriesRepository.getAllCategories()
+                val categories = categoryService.getAllCategories()
                 call.respond(HttpStatusCode.OK, categories)
             }
             post {
-                val requestCategory = call.receive<Category>()
-                val addedCategory =
-                    categoriesRepository.addCategory(
-                        requestCategory.categoryName
-                    )
-                if (addedCategory != null) {
-                    call.respond(HttpStatusCode.Created, addedCategory)
-                } else {
-                    call.respond(HttpStatusCode.BadRequest, "Failed to add category.")
-                }
+                val category = call.receive<Category>()
+                val response = categoryService.createCategory(category)
+                call.respond(HttpStatusCode.Created, response)
             }
-            get("/{id}") {
-                val categoryId = call.parameters["id"] ?: return@get call.respondText(
+            get(GET_CATEGORY) {
+                val categoryId = call.parameters["id"]?.toIntOrNull() ?: return@get call.respondText(
                     "No parameters",
                     status = HttpStatusCode.BadRequest
                 )
-                val category = categoriesRepository.getCategoryById(categoryId.toInt())
-                if (category != null) {
-                    call.respond(HttpStatusCode.OK, category)
-                } else {
-                    call.respond(HttpStatusCode.NotFound, "Category not found.")
-                }
+                val category = categoryService.getCategoryById(categoryId)
+                call.respond(category)
             }
 
-            put("/{categoryId}") {
-                val categoryId = call.parameters["categoryId"]?.toIntOrNull()
+            put(UPDATE_CATEGORY) {
+                val categoryId = call.parameters["id"]?.toIntOrNull() ?: return@put
                 val requestCategory = call.receive<Category>()
-                val updated = categoriesRepository.updateCategory(
-                    categoryId!!,
-                    requestCategory.categoryName
-                )
-                if (updated) {
-                    call.respond(HttpStatusCode.OK, "Category updated successfully.")
-                } else {
-                    call.respond(HttpStatusCode.NotFound, "Category not found.")
-                }
+                val response = categoryService.updateCategory(categoryId, requestCategory)
+                call.respond(response)
             }
 
-            delete("/{categoryId}") {
+            delete(DELETE_CATEGORY) {
                 val categoryId = call.parameters["categoryId"]?.toIntOrNull()
-                val deleted = categoriesRepository.removeCategory(categoryId!!)
-                if (deleted) {
-                    call.respond(HttpStatusCode.OK)
-                } else {
-                    call.respond(HttpStatusCode.NotFound)
-                }
+                    ?: return@delete call.respondText("Please provide categoryId", status = HttpStatusCode.BadRequest)
+                val response = categoryService.deleteCategory(categoryId)
+                call.respond(response, HttpStatusCode.OK)
             }
         }
     }

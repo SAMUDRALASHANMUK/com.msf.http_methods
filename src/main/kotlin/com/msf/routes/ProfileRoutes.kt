@@ -1,15 +1,13 @@
 package com.msf.routes
 
-import com.msf.data.model.Profile
-import com.msf.data.repositories.ProfileRepositoryImpl
-import com.msf.domain.exceptions.PostCreationException
-import com.msf.domain.exceptions.ProfileNotFoundException
+import com.msf.model.Profile
+import com.msf.services.ProfileService
 import com.msf.util.appconstants.ApiEndPoints.PROFILE
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
-import io.ktor.server.response.respond
+import io.ktor.server.response.*
 import io.ktor.server.routing.routing
 import io.ktor.server.routing.route
 import io.ktor.server.routing.get
@@ -21,75 +19,49 @@ import org.koin.ktor.ext.inject
 
 fun Application.configureProfileRoutes() {
 
-    val profileRepository: ProfileRepositoryImpl by inject()
+    val profileService: ProfileService by inject()
     routing {
         route(PROFILE) {
-            get("/") {
-                val profiles = profileRepository.getAllProfiles()
+            get {
+                val profiles = profileService.getAllProfiles()
                 call.respond(profiles)
             }
 
             get("/{id}") {
-                val profileId = call.parameters["id"]?.toIntOrNull()
-                if (profileId != null) {
-                    val profile = profileRepository.getProfileById(profileId)
-                    if (profile != null) {
-                        call.respond(profile)
-                    } else {
-                        throw ProfileNotFoundException("Profile with ID $profileId not found")
-                    }
-                } else {
-                    call.respond(HttpStatusCode.BadRequest)
-                }
+                val profileId = call.parameters["id"]?.toIntOrNull() ?: return@get call.respondText(
+                    "Please provide profile id",
+                    status = HttpStatusCode.BadRequest
+                )
+                val profile = profileService.getProfileById(profileId)
+                call.respond(profile)
             }
 
-            post("/") {
+            post {
                 val profile = call.receive<Profile>()
-                val existingUser = profileRepository.getProfileByUserId(profile.userId)
-
-                if (existingUser != null) {
-                    call.respond("User account already exists.")
-                } else {
-                    val createdProfile = profileRepository.createProfile(profile.userId, profile.profileData)
-                    if (createdProfile != null) {
-                        call.respond(HttpStatusCode.Created, createdProfile)
-                    } else {
-                        throw PostCreationException()
-                    }
-                }
+                val response = profileService.createProfile(profile)
+                call.respond(status = HttpStatusCode.Created, response)
             }
 
             put("/{id}") {
-                val profileId = call.parameters["id"]?.toIntOrNull()
-                if (profileId != null) {
-                    val profile = call.receive<Profile>()
-                    val success = profileRepository.editProfile(profileId, profile.profileData)
-                    if (success) {
-                        call.respond(HttpStatusCode.OK)
-                    } else {
-                        call.respond(HttpStatusCode.NotFound)
-                    }
-                } else {
-                    call.respond(HttpStatusCode.BadRequest)
-                }
+                val profileId = call.parameters["id"]?.toIntOrNull() ?: return@put call.respondText(
+                    "Please provide profile id",
+                    status = HttpStatusCode.BadRequest
+                )
+                val profile = call.receive<Profile>()
+                val response = profileService.updateUser(profileId, profile)
+                call.respond(response)
             }
 
             delete("/{id}") {
-                val profileId = call.parameters["id"]?.toIntOrNull()
-                if (profileId != null) {
-                    val success = profileRepository.deleteProfile(profileId)
-                    if (success) {
-                        call.respond(HttpStatusCode.OK)
-                    } else {
-                        call.respond(HttpStatusCode.NotFound)
-                    }
-                } else {
-                    call.respond(HttpStatusCode.BadRequest)
-                }
+                val profileId = call.parameters["id"]?.toIntOrNull() ?: return@delete call.respondText(
+                    "please provide id",
+                    status = HttpStatusCode.BadRequest
+                )
+                val response = profileService.deleteProfile(profileId)
+                call.respond(response)
             }
         }
     }
 }
-
 
 

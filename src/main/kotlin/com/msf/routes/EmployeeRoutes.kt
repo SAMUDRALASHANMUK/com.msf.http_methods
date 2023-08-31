@@ -1,9 +1,13 @@
 package com.msf.routes
 
-import com.msf.data.methods.getData
-import com.msf.data.model.Employee
-import com.msf.domain.exceptions.EmployeeNotFoundException
+import com.msf.model.Employee
+import com.msf.services.EmployeeService
+import com.msf.util.appconstants.ApiEndPoints.CLIENT_API
+import com.msf.util.appconstants.ApiEndPoints.DELETE_EMPLOYEE
+import com.msf.util.appconstants.ApiEndPoints.EDIT_EMPLOYEE_NAME
 import com.msf.util.appconstants.ApiEndPoints.EMPLOYEE
+import com.msf.util.appconstants.ApiEndPoints.GET_EMPLOYEE
+import com.msf.util.helperfunctions.getData
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
 import io.ktor.http.HttpStatusCode
@@ -11,92 +15,65 @@ import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 
 fun Application.configureEmpRoutes() {
 
     routing {
         route(EMPLOYEE) {
-            //getting all the employee details
-            get("/") {
-                if (Employee.empList.isEmpty()) {
-                    call.respondText("employee not found", status = HttpStatusCode.BadRequest)
-                } else {
-                    call.respond(Employee.empList)
-                }
+            val employeeService: EmployeeService by inject()
+
+            get {
+                val response = employeeService.getAllEmployees()
+                call.respond(response)
             }
-            //getting the employee details by using id
-            get("/{id?}") {
-                val id = call.parameters["id"] ?: return@get call.respondText(
+
+
+            get(GET_EMPLOYEE) {
+                val id = call.parameters["id"]?.toIntOrNull() ?: return@get call.respondText(
                     "No parameters",
                     status = HttpStatusCode.BadRequest
                 )
-                val employee = Employee.empList.find { it.id == id.toInt() }
-                if (employee != null) {
-                    call.respond(employee)
-                } else {
-                    throw EmployeeNotFoundException("Employee not found with ID: $id")
-                }
+                val response = employeeService.getEmployeeById(id)
+                call.respond(response)
+
             }
-            get("/internal-error") {
-                throw InternalError("Internal Server Error")
-            }
-            get("/api/data") {
+            get(CLIENT_API) {
                 call.respond(getData())
             }
 
-            //adding the employee
-            post("/employee/details") {
+            post {
                 val employee = call.receive<Employee>()
-                val employeeExists = Employee.empList.any {
-                    it.id == employee.id
-                }
-                if (employeeExists) {
-                    call.respondText("Employee ID already exists", status = HttpStatusCode.BadRequest)
-                } else {
-                    Employee.empList.add(employee)
-                    call.respond(employee)
-                }
+                val response = employeeService.createEmployee(employee)
+                call.respond(HttpStatusCode.Created, response)
             }
 
-
-            //updating the emp details
-            put("/") {
+            put {
                 val employeePostman = call.receive<Employee>()
-                val employee = Employee.empList.find {
-                    it.id == employeePostman.id
-                } ?: return@put call.respondText("unable to add because id not found")
-
-                Employee.empList[Employee.empList.indexOf(employee)] = employeePostman
-                call.respondText("employee updated")
+                val response = employeeService.updateEmployee(employeePostman)
+                call.respond(response)
             }
 
-            //delete employee by using id
-            delete("/{id?}") {
-                val id = call.parameters["id"]?.toInt()
-                val employee = Employee.empList.find {
-                    it.id == id
-                } ?: return@delete call.respondText("Employee not found with the given id")
-                Employee.empList.remove(employee)
-                call.respondText("Employee deleted", status = HttpStatusCode.OK)
+            delete(DELETE_EMPLOYEE) {
+                val id = call.parameters["id"]?.toInt() ?: return@delete call.respond(
+                    HttpStatusCode.BadRequest,
+                    "please provide employee id"
+                )
+                val response = employeeService.deleteEmployee(id)
+                call.respond(response, "Employee deleted")
             }
 
-
-            //updating the specific value by using id
-            patch("/{id?}") {
-                val id = call.parameters["id"]?.toInt()
-                val name = call.receive<Map<String, String>>()["name"]
-                val employee = Employee.empList.find {
-                    it.id == id
-                } ?: return@patch call.respondText("Employee not found with the given id")
-                val index = Employee.empList.indexOf(employee)
-
-                // Update the specific value (name) for the employee
-                if (name != null) {
-                    employee.name = name
-                }
-                Employee.empList[index] = employee
-
-                call.respondText("Name updated for employee with ID: $id", status = HttpStatusCode.OK)
+            patch(EDIT_EMPLOYEE_NAME) {
+                val id = call.parameters["id"]?.toInt() ?: return@patch call.respond(
+                    HttpStatusCode.BadRequest,
+                    "Please provide employee id"
+                )
+                val name = call.receive<Map<String, String>>()["name"] ?: return@patch call.respond(
+                    HttpStatusCode.BadRequest,
+                    "please provide name"
+                )
+                val response = employeeService.editEmployee(id, name)
+                call.respond(response, "Name updated for employee")
             }
         }
     }

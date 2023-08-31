@@ -1,7 +1,7 @@
 package com.msf.routes
 
-import com.msf.data.model.Article
-import com.msf.data.repositories.ArticlesRepositoryImpl
+import com.msf.model.Article
+import com.msf.services.ArticleService
 import com.msf.util.appconstants.ApiEndPoints.ARTICLE
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
@@ -17,26 +17,25 @@ import org.koin.ktor.ext.inject
 
 fun Application.configureArticleRoutes() {
 
-    val articlesRepository: ArticlesRepositoryImpl by inject()
-
+    val articleService: ArticleService by inject()
     routing {
         route(ARTICLE) {
 
             get("/") {
-                call.respond(articlesRepository.allArticles())
+                call.respond(articleService.getAllUsers())
             }
             get("/{id}") {
-                val id = Integer.parseInt(call.parameters["id"])
-                call.respondText(articlesRepository.article(id).toString())
+                val id = call.parameters["id"]?.toIntOrNull() ?: return@get call.respondText(
+                    "Please provide article id",
+                    status = HttpStatusCode.BadRequest
+                )
+                val article = articleService.getArticleById(id)
+                call.respond(article)
             }
             post("/") {
                 val article = call.receive<Article>()
-                val createdArticle = articlesRepository.addNewArticle(article.title, article.body)
-                if (createdArticle != null) {
-                    call.respond(HttpStatusCode.Created, createdArticle)
-                } else {
-                    call.respond(HttpStatusCode.InternalServerError)
-                }
+                val response = articleService.createArticle(article)
+                call.respond(response.status, response.article!!)
             }
         }
     }

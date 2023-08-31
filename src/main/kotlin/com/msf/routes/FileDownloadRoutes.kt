@@ -1,7 +1,7 @@
 package com.msf.routes
 
-import com.msf.data.methods.downloadFile
-import com.msf.data.methods.getDefaultFileName
+import com.msf.util.helperfunctions.downloadFile
+import com.msf.util.helperfunctions.getDefaultFileName
 import io.ktor.client.HttpClient
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
