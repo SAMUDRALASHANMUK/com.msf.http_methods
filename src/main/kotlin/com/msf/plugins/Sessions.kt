@@ -1,6 +1,6 @@
 package com.msf.plugins
 
-import com.msf.data.model.UserSession
+import com.msf.model.UserSession
 import com.msf.util.appconstants.GlobalConstants.COOKIE_PATH
 import com.msf.util.appconstants.GlobalConstants.SESSION_COOKIE_MAX_AGE_SECONDS
 import com.msf.util.appconstants.GlobalConstants.SESSION_ENCRYPT_KEY

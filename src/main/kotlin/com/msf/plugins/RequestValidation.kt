@@ -1,7 +1,7 @@
 package com.msf.plugins
 
-import com.msf.data.model.Employee
-import com.msf.data.model.User
+import com.msf.model.Employee
+import com.msf.model.User
 import com.msf.util.appconstants.GlobalConstants.MAX_EMAIL_LENGTH
 import com.msf.util.appconstants.GlobalConstants.MAX_USER_NAME_LENGTH
 import com.msf.util.appconstants.GlobalConstants.MIN_USER_NAME_LENGTH

@@ -13,7 +13,7 @@ class ArticleService {
     }
 
     suspend fun getArticleById(id: Int): Article {
-        val article: Article = articlesRepositoryImpl.article(id)
+        val article = articlesRepositoryImpl.article(id)
         if (article != null) {
             return article
         } else {

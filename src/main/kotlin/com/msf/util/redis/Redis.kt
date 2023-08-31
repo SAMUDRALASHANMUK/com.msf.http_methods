@@ -1,6 +1,6 @@
 package com.msf.util.redis
 
-import com.msf.data.model.UserSession
+import com.msf.model.UserSession
 import com.msf.util.appconstants.GlobalConstants.REDIS_EXPIRATION_SECONDS
 import com.typesafe.config.ConfigFactory
 import io.ktor.server.config.HoconApplicationConfig
