@@ -1,6 +1,9 @@
 package com.msf.services
 
-import com.msf.config.status.EmployeeException
+import com.msf.config.status.EmployeeCreateException
+import com.msf.config.status.EmployeeDeleteException
+import com.msf.config.status.EmployeeNotFoundException
+import com.msf.config.status.EmployeeUpdateException
 import com.msf.model.Employee
 import io.ktor.http.*
 
@@ -8,7 +11,7 @@ import io.ktor.http.*
 class EmployeeService {
     fun getAllEmployees(): List<Employee> {
         if (Employee.empList.isEmpty()) {
-            throw EmployeeException()
+            throw EmployeeNotFoundException()
         } else {
             return Employee.empList
         }
@@ -16,7 +19,7 @@ class EmployeeService {
 
     fun getEmployeeById(id: Int): Employee {
         val employee = Employee.empList.find { it.id == id }
-        return employee ?: throw EmployeeException()
+        return employee ?: throw EmployeeNotFoundException()
     }
 
     fun createEmployee(employee: Employee): Employee {
@@ -24,7 +27,7 @@ class EmployeeService {
             it.id == employee.id
         }
         if (employeeExists) {
-            throw EmployeeException()
+            throw EmployeeCreateException()
         } else {
             Employee.empList.add(employee)
             return employee
@@ -39,7 +42,7 @@ class EmployeeService {
             Employee.empList.remove(employee)
             return HttpStatusCode.OK
         } else {
-            throw EmployeeException()
+            throw EmployeeDeleteException()
         }
     }
 
@@ -53,19 +56,19 @@ class EmployeeService {
             Employee.empList[index] = employee
             return HttpStatusCode.OK
         } else {
-            throw EmployeeException()
+            throw EmployeeUpdateException()
         }
     }
 
-    fun updateEmployee(employee: Employee): HttpStatusCode {
+    fun updateEmployee(emp: Employee): HttpStatusCode {
         val employee = Employee.empList.find {
-            it.id == employee.id
+            it.id == emp.id
         }
         if (employee != null) {
-            Employee.empList[Employee.empList.indexOf(employee)] = employee!!
+            Employee.empList[Employee.empList.indexOf(employee)] = employee
             return HttpStatusCode.OK
         } else {
-            throw EmployeeException()
+            throw EmployeeUpdateException()
         }
     }
 }
