@@ -35,7 +35,7 @@ fun Application.configureArticleRoutes() {
             post("/") {
                 val article = call.receive<Article>()
                 val response = articleService.createArticle(article)
-                call.respond(response.status, response.article!!)
+                call.respond(HttpStatusCode.Created, response)
             }
         }
     }

@@ -44,7 +44,7 @@ fun Application.configureUsersRoutes() {
             post {
                 val user = call.receive<User>()
                 val response = userService.createUser(user)
-                call.respond(response.status, response.user!!)
+                call.respond(HttpStatusCode.Created, response)
             }
 
             put(UPDATE_USER) {

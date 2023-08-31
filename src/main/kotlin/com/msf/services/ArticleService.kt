@@ -3,9 +3,7 @@ package com.msf.services
 import com.msf.config.status.ArticleCreateException
 import com.msf.config.status.ArticleNotFoundException
 import com.msf.model.Article
-import com.msf.model.CreateArticleResponse
 import com.msf.repository.ArticlesRepositoryImpl
-import io.ktor.http.*
 
 class ArticleService {
     private val articlesRepositoryImpl = ArticlesRepositoryImpl()
