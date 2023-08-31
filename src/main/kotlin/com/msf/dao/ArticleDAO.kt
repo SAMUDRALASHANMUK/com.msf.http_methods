@@ -1,6 +1,6 @@
 package com.msf.dao
 
-import com.msf.data.model.Article
+import com.msf.model.Article
 
 
 interface ArticleDAO {

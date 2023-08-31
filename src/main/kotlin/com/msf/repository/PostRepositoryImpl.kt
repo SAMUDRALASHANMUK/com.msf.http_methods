@@ -2,8 +2,8 @@ package com.msf.repository
 
 import com.msf.dao.PostDAO
 import com.msf.config.DatabaseFactory.dbQuery
-import com.msf.data.schemas.Posts
-import com.msf.data.schemas.Users
+import com.msf.database.table.Posts
+import com.msf.database.table.Users
 import com.msf.config.status.UserNotFoundException
 import com.msf.model.Post
 import com.msf.util.helperfunctions.resultRowToPost

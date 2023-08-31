@@ -1,9 +1,9 @@
 package com.msf.repository
 
-import com.msf.data.model.User
-import com.msf.domain.interfaces.UsersRepository
+import com.msf.dao.UserDAO
+import com.msf.model.User
 
-class MockUsersRepository : UsersRepository {
+class MockUsersRepository : UserDAO {
     private val mockUsers = mutableListOf(
         User(1, "User1", "user1@example.com"),
         User(2, "User2", "user2@example.com"),

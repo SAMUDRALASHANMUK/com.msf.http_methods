@@ -1,9 +1,10 @@
 package com.msf.repository
 
+import com.msf.config.DatabaseFactory.dbQuery
 import com.msf.dao.ProfileDAO
-import com.msf.data.schemas.Profiles
-import com.msf.data.schemas.Profiles.user_id
-import com.msf.data.schemas.Users
+import com.msf.database.table.Profiles
+import com.msf.database.table.Profiles.user_id
+import com.msf.database.table.Users
 import com.msf.config.status.UserNotFoundException
 import com.msf.model.Profile
 import com.msf.util.helperfunctions.resultRowToProfile

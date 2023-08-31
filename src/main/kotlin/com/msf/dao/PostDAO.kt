@@ -1,6 +1,6 @@
 package com.msf.dao
 
-import com.msf.data.model.Post
+import com.msf.model.Post
 
 
 interface PostDAO {

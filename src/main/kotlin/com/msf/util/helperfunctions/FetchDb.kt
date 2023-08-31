@@ -1,15 +1,16 @@
 package com.msf.util.helperfunctions
 
-import com.msf.data.model.Category
-import com.msf.data.model.Post
-import com.msf.data.model.Profile
-import com.msf.data.model.User
-import com.msf.data.model.PostCategory
-import com.msf.data.schemas.Categories
-import com.msf.data.schemas.Posts
-import com.msf.data.schemas.Profiles
-import com.msf.data.schemas.Users
-import com.msf.data.schemas.PostCategories
+
+import com.msf.database.table.Categories
+import com.msf.database.table.Posts
+import com.msf.database.table.Profiles
+import com.msf.database.table.Users
+import com.msf.database.table.PostCategories
+import com.msf.model.Category
+import com.msf.model.Post
+import com.msf.model.Profile
+import com.msf.model.User
+import com.msf.model.PostCategory
 import org.jetbrains.exposed.sql.ResultRow
 
 fun resultRowToCategory(row: ResultRow) = Category(

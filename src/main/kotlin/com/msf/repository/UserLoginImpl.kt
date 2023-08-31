@@ -2,7 +2,7 @@ package com.msf.repository
 
 import com.msf.dao.UserLoginDAO
 import com.msf.config.DatabaseFactory.dbQuery
-import com.msf.data.schemas.UserLoginTable
+import com.msf.database.table.UserLoginTable
 import com.msf.model.UserLogin
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

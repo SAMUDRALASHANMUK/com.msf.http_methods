@@ -2,9 +2,9 @@ package com.msf.repository
 
 import com.msf.dao.PostCategoryDAO
 import com.msf.config.DatabaseFactory.dbQuery
-import com.msf.data.schemas.Categories
-import com.msf.data.schemas.PostCategories
-import com.msf.data.schemas.Posts
+import com.msf.database.table.Categories
+import com.msf.database.table.PostCategories
+import com.msf.database.table.Posts
 import com.msf.model.Category
 import com.msf.model.Post
 import com.msf.util.helperfunctions.resultPostCategory
@@ -35,10 +35,10 @@ class PostCategoriesRepositoryImpl : PostCategoryDAO {
 
     override suspend fun associatePostWithCategory(postId: Int, categoryId: Int): Boolean = dbQuery {
 
-        val insertStatement = PostCategories.insert {
+        PostCategories.insert {
             it[post_id] = postId
             it[category_id] = categoryId
         }
-        insertStatement.resultedValues?.map(::resultPostCategory)?.singleOrNull()
+        true
     }
 }

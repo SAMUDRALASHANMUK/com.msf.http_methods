@@ -2,7 +2,7 @@ package com.msf.repository
 
 import com.msf.config.DatabaseFactory.dbQuery
 import com.msf.dao.CategoryDAO
-import com.msf.data.schemas.Categories
+import com.msf.database.table.Categories
 import com.msf.model.Category
 import com.msf.util.helperfunctions.resultRowToCategory
 import org.jetbrains.exposed.sql.select

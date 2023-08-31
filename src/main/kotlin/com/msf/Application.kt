@@ -1,5 +1,6 @@
 package com.msf
 
+import com.msf.config.DatabaseFactory
 import com.msf.plugins.configureSecurity
 import com.msf.plugins.configureContentNegotiation
 import com.msf.plugins.configureSessions
@@ -13,8 +14,7 @@ import io.ktor.server.netty.EngineMain
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 fun Application.module() {
-    //DatabaseFactory.init()
-    TestDatabase.init()
+    DatabaseFactory.init()
     configureSecurity()
     configureContentNegotiation()
     configureSessions()
@@ -22,5 +22,5 @@ fun Application.module() {
     configureStatusPages()
     configureKoin()
     configureRouting()
-    TestDatabase.dropTable()
+
 }

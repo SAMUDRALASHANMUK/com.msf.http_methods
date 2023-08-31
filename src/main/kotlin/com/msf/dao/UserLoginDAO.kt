@@ -1,6 +1,6 @@
 package com.msf.dao
 
-import com.msf.data.model.UserLogin
+import com.msf.model.UserLogin
 
 interface UserLoginDAO {
     suspend fun createUser(userName:String,password:String): UserLogin?

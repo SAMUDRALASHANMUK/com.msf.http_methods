@@ -1,12 +1,12 @@
 package com.msf.config
 
-import com.msf.data.schemas.Articles
-import com.msf.data.schemas.Users
-import com.msf.data.schemas.Posts
-import com.msf.data.schemas.Profiles
-import com.msf.data.schemas.Categories
-import com.msf.data.schemas.PostCategories
-import com.msf.data.schemas.UserLoginTable
+import com.msf.database.table.Articles
+import com.msf.database.table.Users
+import com.msf.database.table.Posts
+import com.msf.database.table.Profiles
+import com.msf.database.table.Categories
+import com.msf.database.table.PostCategories
+import com.msf.database.table.UserLoginTable
 import com.typesafe.config.ConfigFactory
 import io.ktor.server.config.HoconApplicationConfig
 import kotlinx.coroutines.Dispatchers

@@ -1,6 +1,6 @@
 package com.msf.dao
 
-import com.msf.data.model.Category
+import com.msf.model.Category
 
 interface CategoryDAO {
 

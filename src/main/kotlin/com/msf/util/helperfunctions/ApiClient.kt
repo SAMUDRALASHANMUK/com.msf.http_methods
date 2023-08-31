@@ -1,7 +1,7 @@
 package com.msf.util.helperfunctions
 
 import com.google.gson.Gson
-import com.msf.data.model.PostClientTest
+import com.msf.model.PostClientTest
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation

@@ -1,8 +1,8 @@
 package com.msf.repository
 
-//import com.msf.config.DatabaseFactory.dbQuery
+import com.msf.config.DatabaseFactory.dbQuery
 import com.msf.dao.UserDAO
-import com.msf.data.schemas.Users
+import com.msf.database.table.Users
 import com.msf.model.User
 import com.msf.util.helperfunctions.resultRowToUser
 import org.jetbrains.exposed.sql.insert

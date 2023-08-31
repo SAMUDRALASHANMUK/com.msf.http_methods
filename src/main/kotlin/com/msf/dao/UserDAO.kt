@@ -1,6 +1,6 @@
 package com.msf.dao
 
-import com.msf.data.model.User
+import com.msf.model.User
 
 
 interface UserDAO {

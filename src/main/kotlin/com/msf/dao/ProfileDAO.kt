@@ -1,6 +1,6 @@
 package com.msf.dao
 
-import com.msf.data.model.Profile
+import com.msf.model.Profile
 
 interface ProfileDAO {
     suspend fun createProfile(userId: Int, profileData: String): Profile?

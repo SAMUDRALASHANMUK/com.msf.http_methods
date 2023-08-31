@@ -1,9 +1,9 @@
 package com.msf.repository
 
 import com.msf.config.DatabaseFactory.dbQuery
-import com.msf.data.model.Article
-import com.msf.data.schemas.Articles
-import com.msf.domain.interfaces.ArticlesRepository
+import com.msf.dao.ArticleDAO
+import com.msf.model.Article
+import com.msf.database.table.Articles
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.insert
@@ -12,7 +12,7 @@ import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
-class ArticlesRepositoryImpl : ArticlesRepository {
+class ArticlesRepositoryImpl : ArticleDAO{
 
     private fun resultRowToArticle(row: ResultRow) = Article(
         id = row[Articles.id],
