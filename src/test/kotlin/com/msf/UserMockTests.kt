@@ -1,7 +1,7 @@
 package com.msf
 
-import com.msf.data.model.User
-import com.msf.data.repositories.MockUsersRepository
+import com.msf.model.User
+import com.msf.repository.MockUsersRepository
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.put
@@ -31,7 +31,7 @@ class UserMockTests {
             User(2, "User2", "user2@example.com"),
             User(3, "User3", "user3@example.com")
         )
-        val response = client.get("/users/")
+        val response = client.get("/users")
         assertEquals(HttpStatusCode.OK, response.status)
 
         val expectedResponseJson = """
@@ -119,8 +119,8 @@ class UserMockTests {
 
     @Test
     fun testDeleteUser_UserNotFound() = testApplication {
-        coEvery { usersRepository.deleteUser(6) } returns false
-        val response = client.delete("/users/6")
+        coEvery { usersRepository.deleteUser(100) } returns false
+        val response = client.delete("/users/100")
         assertEquals(HttpStatusCode.NotFound, response.status)
 
     }

@@ -1,7 +1,7 @@
 package com.msf
 
-import com.msf.data.model.User
-import com.msf.data.repositories.UsersRepositoryImpl
+import com.msf.model.User
+import com.msf.repository.UsersRepositoryImpl
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*

@@ -1,4 +1,4 @@
-package com.msf.config.status
+package com.msf.exception
 
 class CategoryNotFoundException : RuntimeException("Category not found in the database")
 

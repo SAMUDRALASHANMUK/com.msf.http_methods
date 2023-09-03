@@ -1,7 +1,8 @@
 package com.msf.services
 
-import com.msf.config.status.ArticleCreateException
-import com.msf.config.status.ArticleNotFoundException
+import com.msf.exception.ArticleCreateException
+
+import com.msf.exception.ArticleNotFoundException
 import com.msf.model.Article
 import com.msf.repository.ArticlesRepositoryImpl
 

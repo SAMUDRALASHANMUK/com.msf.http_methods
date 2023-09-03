@@ -1,4 +1,4 @@
-package com.msf.config.status
+package com.msf.exception
 
 class ProfileNotFoundException : RuntimeException("Profile not found in the database")
 

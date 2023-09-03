@@ -1,4 +1,4 @@
-package com.msf.config.status
+package com.msf.exception
 
 class ArticleNotFoundException : RuntimeException("Article not found in the database")
 

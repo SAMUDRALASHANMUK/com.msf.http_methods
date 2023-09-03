@@ -1,4 +1,4 @@
-package com.msf.config.status
+package com.msf.exception
 
 class PostNotFoundException : RuntimeException("Post not found in the database")
 

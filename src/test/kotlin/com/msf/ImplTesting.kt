@@ -1,18 +1,13 @@
 package com.msf
 
-import com.msf.data.model.User
-import com.msf.data.model.Post
-import com.msf.data.model.Article
-import com.msf.data.model.Profile
-import com.msf.data.model.Category
-import com.msf.data.model.UserLogin
-import com.msf.data.repositories.PostCategoriesRepositoryImpl
-import com.msf.data.repositories.ArticlesRepositoryImpl
-import com.msf.data.repositories.CategoryRepositoryImpl
-import com.msf.data.repositories.PostRepositoryImpl
-import com.msf.data.repositories.ProfileRepositoryImpl
-import com.msf.data.repositories.UsersRepositoryImpl
-import com.msf.domain.interfaces.UserLoginRepository
+import com.msf.dao.UserLoginDAO
+import com.msf.model.User
+import com.msf.model.Post
+import com.msf.model.Article
+import com.msf.model.Profile
+import com.msf.model.Category
+import com.msf.model.UserLogin
+import com.msf.repository.*
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -27,7 +22,7 @@ class ImplTesting {
     private val mockCategoryRepository: CategoryRepositoryImpl = mockk()
     private val mockArticleRepository: ArticlesRepositoryImpl = mockk()
     private val mockPostCategoriesRepository: PostCategoriesRepositoryImpl = mockk()
-    private val mockUserLoginRepository: UserLoginRepository = mockk()
+    private val mockUserLoginRepository: UserLoginDAO = mockk()
 
     private val testUser = User(1, "testuser", "test@example.com")
     private val testProfile = Profile(1, 1, "Some profile data")
@@ -214,10 +209,9 @@ class ImplTesting {
 
     @Test
     fun testAssociatePostWithCategory() = runBlocking {
-        coEvery { mockPostCategoriesRepository.associatePostWithCategory(1, 1) } returns Unit
-
+        coEvery { mockPostCategoriesRepository.associatePostWithCategory(1, 1) } returns true
         val result = mockPostCategoriesRepository.associatePostWithCategory(1, 1)
-        assertEquals(Unit, result)
+        assertEquals(true, result)
     }
 
     //test cases for user login repo impl

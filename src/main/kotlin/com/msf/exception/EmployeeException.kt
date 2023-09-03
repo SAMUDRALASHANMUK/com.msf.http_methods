@@ -1,4 +1,4 @@
-package com.msf.config.status
+package com.msf.exception
 
 class EmployeeNotFoundException : RuntimeException("Employee not found in the database")
 
