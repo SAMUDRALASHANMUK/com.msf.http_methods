@@ -1,11 +1,12 @@
 package com.msf.database.table
 
-import org.jetbrains.exposed.sql.Table
+import com.msf.util.appconstants.GlobalConstants.CATEGORY_ID
+import com.msf.util.appconstants.GlobalConstants.POST_CATEGORIES_TABLE_NAME
+import com.msf.util.appconstants.GlobalConstants.POST_ID
+import org.jetbrains.exposed.dao.id.UUIDTable
 
-object PostCategories : Table("post_categories") {
+object PostCategories : UUIDTable(POST_CATEGORIES_TABLE_NAME) {
+    val postId = reference(POST_ID, Posts)
+    val categoryId = reference(CATEGORY_ID, Categories)
 
-    val post_id = integer("post_id") references (Posts.post_id)
-    val category_id = integer("category_id") references (Categories.category_id)
-
-    override val primaryKey = PrimaryKey(post_id, category_id)
 }

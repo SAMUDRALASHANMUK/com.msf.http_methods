@@ -1,11 +1,17 @@
 package com.msf.entity
 
-import com.msf.util.appconstants.GlobalConstants.MAX_PROFILE_DATA_LENGTH
-import org.jetbrains.exposed.sql.Table
+import com.msf.database.table.Profiles
+import org.jetbrains.exposed.dao.UUIDEntity
+import org.jetbrains.exposed.dao.UUIDEntityClass
+import org.jetbrains.exposed.dao.id.EntityID
+import java.util.*
 
-object ProfilesEntity : Table("profiles_table") {
-    val profile_id = integer("profile_id").autoIncrement()
-    val user_id = integer("user_id").references(UsersEntity.user_id).uniqueIndex()
-    val profile_data = varchar("profile_data", MAX_PROFILE_DATA_LENGTH)
-    override val primaryKey = PrimaryKey(profile_id)
+
+class ProfilesEntity(id: EntityID<UUID>) : UUIDEntity(id) {
+    companion object : UUIDEntityClass<CategoriesEntity>(Profiles)
+
+    val profileId by Profiles.id
+    val userId by Profiles.user_id
+    val profileData by Profiles.profile_data
+
 }

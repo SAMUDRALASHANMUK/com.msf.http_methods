@@ -3,6 +3,7 @@ package com.msf.services
 import com.msf.exception.PostCreateException
 import com.msf.exception.PostDeleteException
 import com.msf.exception.PostNotFoundException
+import com.msf.exception.PostUpdateException
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import com.msf.model.Post
@@ -34,7 +35,7 @@ class PostService : KoinComponent {
         return if (response) {
             HttpStatusCode.OK
         } else {
-            throw PostNotFoundException()
+            throw PostUpdateException()
         }
     }
 

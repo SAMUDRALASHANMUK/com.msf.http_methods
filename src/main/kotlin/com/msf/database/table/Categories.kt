@@ -1,13 +1,14 @@
 package com.msf.database.table
 
+import com.msf.util.appconstants.GlobalConstants.CATEGORY_ID
+import com.msf.util.appconstants.GlobalConstants.CATEGORY_NAME
+import com.msf.util.appconstants.GlobalConstants.CATEGORY_TABLE_NAME
 import com.msf.util.appconstants.GlobalConstants.MAX_CATEGORY_LENGTH
+import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.Table
 
-object Categories : Table("categories_table") {
+object Categories : UUIDTable(CATEGORY_TABLE_NAME) {
 
-    val category_id = integer("category_id").autoIncrement()
-    val category_name = varchar("category_name", MAX_CATEGORY_LENGTH)
+    val category_name = varchar(CATEGORY_NAME, MAX_CATEGORY_LENGTH)
 
-
-    override val primaryKey = PrimaryKey(category_id)
 }

@@ -1,13 +1,16 @@
 package com.msf.entity
 
-import com.msf.util.appconstants.GlobalConstants.MAX_CATEGORY_LENGTH
-import org.jetbrains.exposed.sql.Table
+import com.msf.database.table.Articles
+import com.msf.database.table.Categories
+import com.msf.util.appconstants.GlobalConstants.CATEGORY_ID
+import org.jetbrains.exposed.dao.UUIDEntity
+import org.jetbrains.exposed.dao.UUIDEntityClass
+import org.jetbrains.exposed.dao.id.EntityID
+import java.util.*
 
-object CategoriesEntity : Table("categories_table") {
+class CategoriesEntity(id: EntityID<UUID>) : UUIDEntity(id) {
+    companion object : UUIDEntityClass<CategoriesEntity>(Categories)
 
-    val category_id = integer("category_id").autoIncrement()
-    val category_name = varchar("category_name", MAX_CATEGORY_LENGTH)
-
-
-    override val primaryKey = PrimaryKey(category_id)
+    val categoryId by Categories.id
+    val categoryName by Categories.category_name
 }

@@ -1,13 +1,15 @@
 package com.msf.entity
 
-import com.msf.util.appconstants.GlobalConstants.MAX_BODY_LENGTH
-import com.msf.util.appconstants.GlobalConstants.MAX_TITLE_LENGTH
-import org.jetbrains.exposed.sql.Table
+import com.msf.database.table.Articles
+import org.jetbrains.exposed.dao.UUIDEntity
+import org.jetbrains.exposed.dao.UUIDEntityClass
+import org.jetbrains.exposed.dao.id.EntityID
+import java.util.*
 
-object ArticleEntity : Table("Articles") {
-    val id = integer("id").autoIncrement()
-    val title = varchar("title", MAX_TITLE_LENGTH)
-    val body = varchar("body", MAX_BODY_LENGTH)
+class ArticleEntity(id: EntityID<UUID>) : UUIDEntity(id) {
+    companion object : UUIDEntityClass<ArticleEntity>(Articles)
 
-    override val primaryKey = PrimaryKey(id)
+    val articleId by Articles.id
+    val title by Articles.title
+    val body by Articles.body
 }

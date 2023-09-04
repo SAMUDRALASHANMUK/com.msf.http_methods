@@ -1,12 +1,16 @@
 package com.msf.entity
 
-import com.msf.util.appconstants.GlobalConstants.MAX_USER_NAME_LENGTH
-import com.msf.util.appconstants.GlobalConstants.MAX_EMAIL_LENGTH
-import org.jetbrains.exposed.sql.Table
+import com.msf.database.table.Users
+import org.jetbrains.exposed.dao.UUIDEntity
+import org.jetbrains.exposed.dao.UUIDEntityClass
+import org.jetbrains.exposed.dao.id.EntityID
+import java.util.*
 
-object UsersEntity : Table("users_table") {
-    val user_id = integer("user_id").autoIncrement()
-    val user_name = varchar("user_name", MAX_USER_NAME_LENGTH)
-    val email = varchar("email", MAX_EMAIL_LENGTH)
-    override val primaryKey = PrimaryKey(user_id)
+
+class UsersEntity(id: EntityID<UUID>) : UUIDEntity(id) {
+    companion object : UUIDEntityClass<CategoriesEntity>(Users)
+
+    val userId by Users.id
+    val userName by Users.user_name
+    val email by Users.email
 }

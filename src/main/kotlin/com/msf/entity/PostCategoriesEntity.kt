@@ -1,11 +1,15 @@
 package com.msf.entity
 
-import org.jetbrains.exposed.sql.Table
+import com.msf.database.table.PostCategories
+import org.jetbrains.exposed.dao.UUIDEntity
+import org.jetbrains.exposed.dao.UUIDEntityClass
+import org.jetbrains.exposed.dao.id.EntityID
+import java.util.*
 
-object PostCategoriesEntity : Table("post_categories") {
+class PostCategoriesEntity(id: EntityID<UUID>) : UUIDEntity(id) {
+    companion object : UUIDEntityClass<PostCategoriesEntity>(PostCategories)
 
-    val post_id = integer("post_id") references (PostsEntity.post_id)
-    val category_id = integer("category_id") references (CategoriesEntity.category_id)
-
-    override val primaryKey = PrimaryKey(post_id, category_id)
+    val postId by PostCategories.postId
+    val categoryId by PostCategories.categoryId
 }
+

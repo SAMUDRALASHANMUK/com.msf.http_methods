@@ -1,14 +1,17 @@
 package com.msf.entity
 
-import com.msf.util.appconstants.GlobalConstants.MAX_CONTENT_LENGTH
-import com.msf.util.appconstants.GlobalConstants.MAX_TITLE_LENGTH
-import org.jetbrains.exposed.sql.Table
+import com.msf.database.table.Posts
+import org.jetbrains.exposed.dao.UUIDEntity
+import org.jetbrains.exposed.dao.UUIDEntityClass
+import org.jetbrains.exposed.dao.id.EntityID
+import java.util.*
 
-object PostsEntity : Table("posts_table") {
-    val post_id = integer("post_id").autoIncrement()
-    val user_id = integer("user_id") references UsersEntity.user_id
-    val title = varchar("title", MAX_TITLE_LENGTH)
-    val content = varchar("content", MAX_CONTENT_LENGTH)
 
-    override val primaryKey = PrimaryKey(post_id)
+class PostsEntity(id: EntityID<UUID>) : UUIDEntity(id) {
+    companion object : UUIDEntityClass<CategoriesEntity>(Posts)
+
+    val postId by Posts.id
+    val userId by Posts.user_id
+    val title by Posts.title
+    val content by Posts.content
 }

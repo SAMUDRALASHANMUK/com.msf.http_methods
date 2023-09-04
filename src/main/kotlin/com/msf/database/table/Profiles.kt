@@ -1,11 +1,14 @@
 package com.msf.database.table
 
 import com.msf.util.appconstants.GlobalConstants.MAX_PROFILE_DATA_LENGTH
+import com.msf.util.appconstants.GlobalConstants.PROFILE_DATA
+import com.msf.util.appconstants.GlobalConstants.PROFILE_ID
+import com.msf.util.appconstants.GlobalConstants.PROFILE_TABLE_NAME
+import com.msf.util.appconstants.GlobalConstants.USER_ID
+import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.Table
 
-object Profiles : Table("profiles_table") {
-    val profile_id = integer("profile_id").autoIncrement()
-    val user_id = integer("user_id").references(Users.user_id).uniqueIndex()
-    val profile_data = varchar("profile_data", MAX_PROFILE_DATA_LENGTH)
-    override val primaryKey = PrimaryKey(profile_id)
+object Profiles : UUIDTable(PROFILE_TABLE_NAME) {
+    val user_id = integer(USER_ID).references(Users.user_id).uniqueIndex()
+    val profile_data = varchar(PROFILE_DATA, MAX_PROFILE_DATA_LENGTH)
 }
