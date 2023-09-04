@@ -1,14 +1,16 @@
 package com.msf.services
 
-import com.msf.config.status.EmployeeCreateException
-import com.msf.config.status.EmployeeDeleteException
-import com.msf.config.status.EmployeeNotFoundException
-import com.msf.config.status.EmployeeUpdateException
+
+import com.msf.exception.EmployeeCreateException
+import com.msf.exception.EmployeeDeleteException
+import com.msf.exception.EmployeeNotFoundException
+import com.msf.exception.EmployeeUpdateException
 import com.msf.model.Employee
 import io.ktor.http.*
 
 
 class EmployeeService {
+
     fun getAllEmployees(): List<Employee> {
         if (Employee.empList.isEmpty()) {
             throw EmployeeNotFoundException()

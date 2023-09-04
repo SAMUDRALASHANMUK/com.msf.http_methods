@@ -14,7 +14,7 @@ import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
-class PostRepositoryImpl : PostDAO {
+class PostRepository : PostDAO {
     override suspend fun createPost(userId: Int, title: String, content: String): Post? = dbQuery {
         // Check if the user with the given userId exists
         Users.select { Users.user_id eq userId }

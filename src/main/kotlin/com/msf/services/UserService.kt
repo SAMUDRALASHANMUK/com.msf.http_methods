@@ -1,16 +1,19 @@
 package com.msf.services
 
-import com.msf.config.status.UserCreateException
-import com.msf.config.status.UserDeleteException
-import com.msf.config.status.UserNotFoundException
-import com.msf.config.status.UserUpdateException
+
+import com.msf.exception.UserCreateException
+import com.msf.exception.UserDeleteException
+import com.msf.exception.UserNotFoundException
+import com.msf.exception.UserUpdateException
 import com.msf.model.User
-import com.msf.repository.UsersRepositoryImpl
+import com.msf.repository.UsersRepository
 import io.ktor.http.*
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class UserService {
+class UserService : KoinComponent {
 
-    private val usersRepository = UsersRepositoryImpl()
+    private val usersRepository by inject<UsersRepository>()
     suspend fun getAllUsers(): List<User> {
         return usersRepository.getAllUsers()
     }

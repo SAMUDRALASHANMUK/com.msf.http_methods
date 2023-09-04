@@ -11,7 +11,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 
 
-class UserLoginImpl : UserLoginDAO {
+class UserLoginRepository : UserLoginDAO {
 
     private fun getResultToUserLogin(row: ResultRow): UserLogin =
         UserLogin(

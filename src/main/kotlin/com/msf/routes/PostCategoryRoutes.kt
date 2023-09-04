@@ -1,7 +1,6 @@
 package com.msf.routes
 
 import com.msf.model.PostCategory
-import com.msf.repository.PostCategoriesRepositoryImpl
 import com.msf.services.PostCategoryService
 import com.msf.util.appconstants.ApiEndPoints.CATEGORY_POSTS_PATH
 import com.msf.util.appconstants.ApiEndPoints.POST_CATEGORIES_PATH

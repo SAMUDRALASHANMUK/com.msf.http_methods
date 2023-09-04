@@ -16,7 +16,7 @@ import org.jetbrains.exposed.sql.selectAll
 
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
-class ProfileRepositoryImpl : ProfileDAO {
+class ProfileRepository : ProfileDAO {
     override suspend fun createProfile(userId: Int, profileData: String): Profile? = dbQuery {
         Users.select { Users.user_id eq userId }
             .singleOrNull() ?: throw UserNotFoundException()

@@ -1,22 +1,27 @@
 package com.msf.di
 
+import com.msf.dao.*
 import com.msf.repository.*
 import com.msf.services.*
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val myModule = module {
-    single<UsersRepositoryImpl> { UsersRepositoryImpl() }
-    single<ArticlesRepositoryImpl> { ArticlesRepositoryImpl() }
-    single<PostRepositoryImpl> { PostRepositoryImpl() }
-    single<PostCategoriesRepositoryImpl> { PostCategoriesRepositoryImpl() }
-    single<ProfileRepositoryImpl> { ProfileRepositoryImpl() }
-    single<UserLoginImpl> { UserLoginImpl() }
-    single<CategoryRepositoryImpl> { CategoryRepositoryImpl() }
-    single<MockUsersRepository> { MockUsersRepository() }
-    single<UserService> { UserService() }
-    single<ProfileService> { ProfileService() }
-    single<PostService> { PostService() }
-    single<PostCategoryService> { PostCategoryService() }
-    single<CategoryService> { CategoryService() }
-    single<ArticleService> { ArticleService() }
+
+    singleOf(::ArticlesRepository) { bind<ArticleDAO>() }
+    singleOf(::CategoryRepository) { bind<CategoryDAO>() }
+    singleOf(::PostCategoriesRepository) { bind<PostCategoryDAO>() }
+    singleOf(::PostRepository) { bind<PostDAO>() }
+    singleOf(::ProfileRepository) { bind<ProfileDAO>() }
+    singleOf(::UsersRepository) { bind<UserDAO>() }
+    singleOf(::UserLoginRepository) { bind<UserLoginDAO>() }
+    singleOf(::ArticleService)
+    singleOf(::CategoryService)
+    singleOf(::EmployeeService)
+    singleOf(::PostCategoryService)
+    singleOf(::PostService)
+    singleOf(::ProfileService)
+    singleOf(::UserService)
+
 }

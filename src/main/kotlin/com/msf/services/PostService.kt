@@ -1,14 +1,16 @@
 package com.msf.services
 
-import com.msf.config.status.PostCreateException
-import com.msf.config.status.PostDeleteException
-import com.msf.config.status.PostNotFoundException
+import com.msf.exception.PostCreateException
+import com.msf.exception.PostDeleteException
+import com.msf.exception.PostNotFoundException
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import com.msf.model.Post
-import com.msf.repository.PostRepositoryImpl
+import com.msf.repository.PostRepository
 import io.ktor.http.*
 
-class PostService {
-    private val postRepositoryImpl = PostRepositoryImpl()
+class PostService : KoinComponent {
+    private val postRepositoryImpl by inject<PostRepository>()
     suspend fun getAllPosts(): List<Post> {
         return postRepositoryImpl.getAllPosts()
     }

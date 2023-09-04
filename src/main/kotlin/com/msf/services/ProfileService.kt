@@ -1,34 +1,36 @@
 package com.msf.services
 
-import com.msf.config.status.ProfileCreateException
-import com.msf.config.status.ProfileDeleteException
-import com.msf.config.status.ProfileNotFoundException
-import com.msf.config.status.ProfileUpdateException
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import com.msf.exception.ProfileCreateException
+import com.msf.exception.ProfileDeleteException
+import com.msf.exception.ProfileNotFoundException
+import com.msf.exception.ProfileUpdateException
 import com.msf.model.Profile
-import com.msf.repository.ProfileRepositoryImpl
+import com.msf.repository.ProfileRepository
 import io.ktor.http.*
 
 
-class ProfileService {
-    private val profileRepositoryImpl = ProfileRepositoryImpl()
+class ProfileService : KoinComponent {
+    private val profileRepository by inject<ProfileRepository>()
     suspend fun getAllProfiles(): List<Profile> {
-        return profileRepositoryImpl.getAllProfiles()
+        return profileRepository.getAllProfiles()
     }
 
     suspend fun getProfileById(id: Int): Profile {
-        return profileRepositoryImpl.getProfileById(id) ?: throw ProfileNotFoundException()
+        return profileRepository.getProfileById(id) ?: throw ProfileNotFoundException()
     }
 
     suspend fun createProfile(profile: Profile): Profile {
-        profileRepositoryImpl.getProfileByUserId(profile.userId)
+        profileRepository.getProfileByUserId(profile.userId)
 
-        return profileRepositoryImpl.createProfile(profile.userId, profile.profileData)
+        return profileRepository.createProfile(profile.userId, profile.profileData)
             ?: throw ProfileCreateException()
     }
 
 
     suspend fun updateUser(id: Int, profile: Profile): HttpStatusCode {
-        val response = profileRepositoryImpl.editProfile(id, profile.profileData)
+        val response = profileRepository.editProfile(id, profile.profileData)
         return if (response) {
             HttpStatusCode.OK
         } else {
@@ -37,7 +39,7 @@ class ProfileService {
     }
 
     suspend fun deleteProfile(id: Int): HttpStatusCode {
-        val response = profileRepositoryImpl.deleteProfile(id)
+        val response = profileRepository.deleteProfile(id)
         return if (response) {
             HttpStatusCode.OK
         } else {

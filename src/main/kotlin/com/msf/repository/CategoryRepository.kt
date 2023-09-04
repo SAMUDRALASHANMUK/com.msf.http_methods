@@ -12,7 +12,7 @@ import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
-class CategoryRepositoryImpl : CategoryDAO {
+class CategoryRepository : CategoryDAO {
     override suspend fun addCategory(categoryName: String): Category? = dbQuery {
         // Insert the new category into the Categories table
         val insertStatement = Categories.insert {

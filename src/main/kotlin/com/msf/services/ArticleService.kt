@@ -4,16 +4,18 @@ import com.msf.exception.ArticleCreateException
 
 import com.msf.exception.ArticleNotFoundException
 import com.msf.model.Article
-import com.msf.repository.ArticlesRepositoryImpl
+import com.msf.repository.ArticlesRepository
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class ArticleService {
-    private val articlesRepositoryImpl = ArticlesRepositoryImpl()
+class ArticleService : KoinComponent {
+    private val articlesRepository by inject<ArticlesRepository>()
     suspend fun getAllUsers(): List<Article> {
-        return articlesRepositoryImpl.allArticles()
+        return articlesRepository.allArticles()
     }
 
     suspend fun getArticleById(id: Int): Article {
-        val article = articlesRepositoryImpl.article(id)
+        val article = articlesRepository.article(id)
         if (article != null) {
             return article
         } else {
@@ -22,7 +24,7 @@ class ArticleService {
     }
 
     suspend fun createArticle(article: Article): Article {
-        val article = articlesRepositoryImpl.addNewArticle(article.title, article.body)
+        val article = articlesRepository.addNewArticle(article.title, article.body)
         return article ?: throw ArticleCreateException()
 
     }

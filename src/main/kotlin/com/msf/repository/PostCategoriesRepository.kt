@@ -7,7 +7,6 @@ import com.msf.database.table.PostCategories
 import com.msf.database.table.Posts
 import com.msf.model.Category
 import com.msf.model.Post
-import com.msf.util.helperfunctions.resultPostCategory
 import com.msf.util.helperfunctions.resultRowToCategory
 import com.msf.util.helperfunctions.resultRowToPost
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -15,7 +14,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class PostCategoriesRepositoryImpl : PostCategoryDAO {
+class PostCategoriesRepository : PostCategoryDAO {
 
     override suspend fun getPostsForCategory(categoryId: Int): List<Post> = dbQuery {
         return@dbQuery transaction {

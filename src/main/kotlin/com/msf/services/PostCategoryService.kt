@@ -1,15 +1,18 @@
 package com.msf.services
 
-import com.msf.config.status.PostCategoryCreateException
-import com.msf.config.status.PostCategoryException
+import com.msf.exception.PostCategoryCreateException
+import com.msf.exception.PostCategoryException
 import com.msf.model.Category
 import com.msf.model.Post
 import com.msf.model.PostCategory
-import com.msf.repository.PostCategoriesRepositoryImpl
+import com.msf.repository.PostCategoriesRepository
 import io.ktor.http.*
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class PostCategoryService {
-    private val postCategoriesRepository = PostCategoriesRepositoryImpl()
+class PostCategoryService : KoinComponent {
+
+    private val postCategoriesRepository by inject<PostCategoriesRepository>()
     suspend fun createPostCategory(postCategory: PostCategory): HttpStatusCode {
         val response = postCategoriesRepository.associatePostWithCategory(postCategory.postId, postCategory.categoryId)
         return if (response) {
@@ -33,3 +36,4 @@ class PostCategoryService {
         }
     }
 }
+

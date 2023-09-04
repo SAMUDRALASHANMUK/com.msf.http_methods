@@ -1,28 +1,33 @@
 package com.msf.services
 
-import com.msf.config.status.*
+import com.msf.exception.CategoryCreateException
+import com.msf.exception.CategoryDeleteException
+import com.msf.exception.CategoryNotFoundException
+import com.msf.exception.CategoryUpdateException
 import com.msf.model.Category
-import com.msf.repository.CategoryRepositoryImpl
+import com.msf.repository.CategoryRepository
 import io.ktor.http.*
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class CategoryService {
-    private val categoryRepositoryImpl = CategoryRepositoryImpl()
+class CategoryService : KoinComponent {
+    private val categoryRepository by inject<CategoryRepository>()
     suspend fun getAllCategories(): List<Category> {
-        return categoryRepositoryImpl.getAllCategories()
+        return categoryRepository.getAllCategories()
     }
 
     suspend fun getCategoryById(id: Int): Category {
-        val response = categoryRepositoryImpl.getCategoryById(id)
+        val response = categoryRepository.getCategoryById(id)
         return response ?: throw CategoryNotFoundException()
     }
 
     suspend fun createCategory(category: Category): Category {
-        val response = categoryRepositoryImpl.addCategory(category.categoryName)
+        val response = categoryRepository.addCategory(category.categoryName)
         return response ?: throw CategoryCreateException()
     }
 
     suspend fun updateCategory(id: Int, category: Category): HttpStatusCode {
-        val response = categoryRepositoryImpl.updateCategory(categoryId = id, category.categoryName)
+        val response = categoryRepository.updateCategory(categoryId = id, category.categoryName)
         return if (response) {
             HttpStatusCode.OK
         } else {
@@ -31,7 +36,7 @@ class CategoryService {
     }
 
     suspend fun deleteCategory(id: Int): HttpStatusCode {
-        val response = categoryRepositoryImpl.removeCategory(id)
+        val response = categoryRepository.removeCategory(id)
         return if (response) {
             HttpStatusCode.OK
         } else {

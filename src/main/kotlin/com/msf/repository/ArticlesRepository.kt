@@ -12,7 +12,7 @@ import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
-class ArticlesRepositoryImpl : ArticleDAO{
+class ArticlesRepository : ArticleDAO{
 
     private fun resultRowToArticle(row: ResultRow) = Article(
         id = row[Articles.id],

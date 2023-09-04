@@ -16,12 +16,12 @@ import kotlin.test.assertEquals
 
 class ImplTesting {
 
-    private val mockUserRepository: UsersRepositoryImpl = mockk()
-    private val mockProfileRepository: ProfileRepositoryImpl = mockk()
-    private val mockPostRepository: PostRepositoryImpl = mockk()
-    private val mockCategoryRepository: CategoryRepositoryImpl = mockk()
-    private val mockArticleRepository: ArticlesRepositoryImpl = mockk()
-    private val mockPostCategoriesRepository: PostCategoriesRepositoryImpl = mockk()
+    private val mockUserRepository: UsersRepository = mockk()
+    private val mockProfileRepository: ProfileRepository = mockk()
+    private val mockPostRepository: PostRepository = mockk()
+    private val mockCategoryRepository: CategoryRepository = mockk()
+    private val mockArticleRepository: ArticlesRepository = mockk()
+    private val mockPostCategoriesRepository: PostCategoriesRepository = mockk()
     private val mockUserLoginRepository: UserLoginDAO = mockk()
 
     private val testUser = User(1, "testuser", "test@example.com")

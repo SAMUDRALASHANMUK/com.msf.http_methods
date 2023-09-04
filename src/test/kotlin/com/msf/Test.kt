@@ -1,7 +1,7 @@
 package com.msf
 
 import com.msf.model.User
-import com.msf.repository.UsersRepositoryImpl
+import com.msf.repository.UsersRepository
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -15,7 +15,7 @@ import kotlin.test.assertEquals
 
 class Test {
 
-    private val usersRepository = mockk<UsersRepositoryImpl>()
+    private val usersRepository = mockk<UsersRepository>()
 
     @Test
     fun testGetAllUsers() = testApplication {

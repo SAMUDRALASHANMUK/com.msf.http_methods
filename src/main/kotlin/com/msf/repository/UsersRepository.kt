@@ -12,7 +12,7 @@ import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
-open class UsersRepositoryImpl : UserDAO {
+open class UsersRepository : UserDAO {
     override suspend fun createUser(username: String, email: String): User? = dbQuery {
 
         val insertStatement = Users.insert {
