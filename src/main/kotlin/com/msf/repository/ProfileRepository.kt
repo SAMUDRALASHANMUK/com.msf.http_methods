@@ -5,7 +5,7 @@ import com.msf.dao.ProfileDAO
 import com.msf.database.table.Profiles
 import com.msf.database.table.Profiles.user_id
 import com.msf.database.table.Users
-import com.msf.config.status.UserNotFoundException
+import com.msf.exception.UserNotFoundException
 import com.msf.model.Profile
 import com.msf.util.helperfunctions.resultRowToProfile
 import org.jetbrains.exposed.sql.select
@@ -55,8 +55,7 @@ class ProfileRepository : ProfileDAO {
     }
 
     override suspend fun deleteProfile(profileId: Int): Boolean = dbQuery {
-        val deletedRows = Users.deleteWhere { Users.user_id eq profileId }
+        val deletedRows = Users.deleteWhere { user_id eq profileId }
         deletedRows > 0
     }
-
 }

@@ -4,7 +4,7 @@ import com.msf.dao.PostDAO
 import com.msf.config.DatabaseFactory.dbQuery
 import com.msf.database.table.Posts
 import com.msf.database.table.Users
-import com.msf.config.status.UserNotFoundException
+import com.msf.exception.UserNotFoundException
 import com.msf.model.Post
 import com.msf.util.helperfunctions.resultRowToPost
 import org.jetbrains.exposed.sql.select
