@@ -2,6 +2,7 @@ package com.msf.routes
 
 
 import com.msf.model.User
+import com.msf.model.UserInput
 import com.msf.services.UserService
 import com.msf.util.appconstants.ApiEndPoints.DELETE_USER
 import com.msf.util.appconstants.ApiEndPoints.GET_USER
@@ -29,42 +30,41 @@ fun Application.configureUsersRoutes() {
     routing {
         route(USER) {
             get {
-                val users = userService.getAllUsers()
-                call.respond(users)
+                userService.getAllUsers().apply { call.respond(this) }
             }
 
             get(GET_USER) {
-                val userId =  runCatching { UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@get call.respondText(
-                    "Please provide user Id",
-                    status = HttpStatusCode.BadRequest
-                )
-                val user = userService.getUserById(userId)
-                call.respond(user)
+                val userId =
+                    runCatching { UUID.fromString(call.parameters["id"]) }.getOrNull() ?: return@get call.respondText(
+                        "Please provide user Id",
+                        status = HttpStatusCode.BadRequest
+                    )
+                userService.getUserById(userId).apply { call.respond(this) }
+
             }
 
             post {
-                val user = call.receive<User>()
-                val response = userService.createUser(user)
-                call.respond(HttpStatusCode.Created, response)
+                val user = call.receive<UserInput>()
+                userService.createUser(user).apply { call.respond(HttpStatusCode.Created, this) }
             }
 
             put(UPDATE_USER) {
-                val userId =  runCatching {UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@put call.respond(
-                    status = HttpStatusCode.BadRequest,
-                    "please provide id to update"
-                )
+                val userId =
+                    runCatching { UUID.fromString(call.parameters["id"]) }.getOrNull() ?: return@put call.respond(
+                        status = HttpStatusCode.BadRequest,
+                        "please provide id to update"
+                    )
                 val user = call.receive<User>()
-                val status = userService.updateUser(userId, user)
-                call.respond(status)
+                userService.updateUser(userId, user).apply { call.respond(this) }
             }
 
             delete(DELETE_USER) {
-                val userId = runCatching {UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@delete call.respondText(
-                    "Please provide user id to delete",
-                    status = HttpStatusCode.BadRequest
-                )
-                var status = userService.deleteUser(userId)
-                call.respond(status)
+                val userId = runCatching { UUID.fromString(call.parameters["id"]) }.getOrNull()
+                    ?: return@delete call.respondText(
+                        "Please provide user id to delete",
+                        status = HttpStatusCode.BadRequest
+                    )
+                userService.deleteUser(userId).apply { call.respond(this) }
             }
         }
     }

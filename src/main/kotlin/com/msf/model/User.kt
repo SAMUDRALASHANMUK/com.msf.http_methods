@@ -6,4 +6,13 @@ import org.jetbrains.exposed.dao.id.EntityID
 import java.util.UUID
 
 @Serializable
-data class User(@Contextual var id: EntityID<@Contextual UUID>, var userName: String, var email: String)
+data class User(
+    var id: String,
+    var userName: String,
+    var email: String
+)
+@Serializable
+data class UserInput(
+    var userName: String,
+    var email: String
+)

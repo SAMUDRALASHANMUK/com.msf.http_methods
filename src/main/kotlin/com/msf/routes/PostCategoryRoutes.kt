@@ -27,8 +27,8 @@ fun Application.configurePostCategoryRoutes() {
                     "please provide category_id"
                 )
 
-            val associatedPosts = postCategoryService.getPostsForCategory(categoryId)
-            call.respond(HttpStatusCode.OK, associatedPosts)
+            postCategoryService.getPostsForCategory(categoryId)
+                .apply { call.respond(HttpStatusCode.OK, this) }
         }
 
         get(POST_CATEGORIES_PATH) {
@@ -37,13 +37,13 @@ fun Application.configurePostCategoryRoutes() {
                     HttpStatusCode.BadRequest,
                     "Please provide post id"
                 )
-            val associatedCategories = postCategoryService.getCategoriesForPost(postId)
-            call.respond(HttpStatusCode.OK, associatedCategories)
+            postCategoryService.getCategoriesForPost(postId)
+                .apply { call.respond(HttpStatusCode.OK, this) }
         }
         post {
             val postCategory = call.receive<PostCategory>()
-            val response = postCategoryService.createPostCategory(postCategory)
-            call.respond(response)
+            postCategoryService.createPostCategory(postCategory)
+                .apply { call.respond(this) }
         }
     }
 }

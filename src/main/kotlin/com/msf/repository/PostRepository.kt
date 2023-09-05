@@ -26,7 +26,7 @@ class PostRepository : PostDAO {
         // The user exists, proceed with creating the post
         val insertStatement = Posts.insert {
 
-            it[user_id] = userId
+            it[Posts.userId] = userId
             it[Posts.title] = title
             it[Posts.content] = content
         }

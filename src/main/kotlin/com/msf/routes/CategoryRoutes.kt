@@ -26,35 +26,31 @@ fun Application.configureCategoryRoutes() {
     routing {
         route(CATEGORY) {
             get {
-                val categories = categoryService.getAllCategories()
-                call.respond(HttpStatusCode.OK, categories)
+                categoryService.getAllCategories().apply { call.respond(HttpStatusCode.OK, this) }
             }
             post {
                 val category = call.receive<Category>()
-                val response = categoryService.createCategory(category)
-                call.respond(HttpStatusCode.Created, response)
+                categoryService.createCategory(category).apply { call.respond(HttpStatusCode.Created, this) }
             }
             get(GET_CATEGORY) {
-                val categoryId = runCatching {UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@get call.respondText(
-                    "No parameters",
-                    status = HttpStatusCode.BadRequest
-                )
-                val category = categoryService.getCategoryById(categoryId)
-                call.respond(category)
+                val categoryId =
+                    runCatching { UUID.fromString(call.parameters["id"]) }.getOrNull() ?: return@get call.respondText(
+                        "No parameters",
+                        status = HttpStatusCode.BadRequest
+                    )
+                categoryService.getCategoryById(categoryId).apply { call.respond(this) }
             }
 
             put(UPDATE_CATEGORY) {
-                val categoryId =  runCatching {UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@put
+                val categoryId = runCatching { UUID.fromString(call.parameters["id"]) }.getOrNull() ?: return@put
                 val requestCategory = call.receive<Category>()
-                val response = categoryService.updateCategory(categoryId, requestCategory)
-                call.respond(response)
+                categoryService.updateCategory(categoryId, requestCategory).apply { call.respond(this) }
             }
 
             delete(DELETE_CATEGORY) {
-                val categoryId =  runCatching {UUID.fromString(call.parameters["id"])}.getOrNull()
+                val categoryId = runCatching { UUID.fromString(call.parameters["id"]) }.getOrNull()
                     ?: return@delete call.respondText("Please provide categoryId", status = HttpStatusCode.BadRequest)
-                val response = categoryService.deleteCategory(categoryId)
-                call.respond(response, HttpStatusCode.OK)
+                categoryService.deleteCategory(categoryId).apply { call.respond(this, HttpStatusCode.OK) }
             }
         }
     }

@@ -5,22 +5,25 @@ import com.msf.dao.UserDAO
 import com.msf.database.table.Users
 import com.msf.model.User
 import com.msf.util.helperfunctions.resultRowToUser
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.update
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.selectAll
+import kotlinx.serialization.Serializable
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.util.UUID
+@Serializable
+data class userId1(val id: String)
+
+fun mapUserId(row: ResultRow): userId1 {
+    return userId1(row[Users.id].toString())
+}
 
 open class UsersRepository : UserDAO {
-    override suspend fun createUser(username: String, email: String): User? = dbQuery {
+    override suspend fun createUser(username: String, email: String): userId1? = dbQuery {
 
         val insertStatement = Users.insert {
             it[user_name] = username
             it[Users.email] = email
         }
-        insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToUser)
+        insertStatement.resultedValues?.singleOrNull()?.let(::mapUserId)!!
     }
 
 

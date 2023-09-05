@@ -24,8 +24,9 @@ fun Application.configureEmpRoutes() {
             val employeeService: EmployeeService by inject()
 
             get {
-                val response = employeeService.getAllEmployees()
-                call.respond(response)
+                employeeService.getAllEmployees().apply {
+                    call.respond(this)
+                }
             }
 
 
@@ -34,24 +35,21 @@ fun Application.configureEmpRoutes() {
                     "No parameters",
                     status = HttpStatusCode.BadRequest
                 )
-                val response = employeeService.getEmployeeById(id)
-                call.respond(response)
+                employeeService.getEmployeeById(id).apply { call.respond(this) }
 
             }
             get(CLIENT_API) {
-                call.respond(getData())
+                getData().apply { call.respond(this) }
             }
 
             post {
                 val employee = call.receive<Employee>()
-                val response = employeeService.createEmployee(employee)
-                call.respond(HttpStatusCode.Created, response)
+                employeeService.createEmployee(employee).apply { call.respond(HttpStatusCode.Created, this) }
             }
 
             put {
                 val employeePostman = call.receive<Employee>()
-                val response = employeeService.updateEmployee(employeePostman)
-                call.respond(response)
+                employeeService.updateEmployee(employeePostman).apply { call.respond(this) }
             }
 
             delete(DELETE_EMPLOYEE) {
@@ -59,8 +57,7 @@ fun Application.configureEmpRoutes() {
                     HttpStatusCode.BadRequest,
                     "please provide employee id"
                 )
-                val response = employeeService.deleteEmployee(id)
-                call.respond(response, "Employee deleted")
+                employeeService.deleteEmployee(id).apply { call.respond(this, "Employee deleted") }
             }
 
             patch(EDIT_EMPLOYEE_NAME) {
@@ -72,8 +69,7 @@ fun Application.configureEmpRoutes() {
                     HttpStatusCode.BadRequest,
                     "please provide name"
                 )
-                val response = employeeService.editEmployee(id, name)
-                call.respond(response, "Name updated for employee")
+                employeeService.editEmployee(id, name).apply { call.respond(this, "Name updated for employee") }
             }
         }
     }

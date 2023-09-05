@@ -20,7 +20,7 @@ fun resultRowToCategory(row: ResultRow) = Category(
 
 fun resultRowToPost(row: ResultRow) = Post(
     postId = row[Posts.id],
-    userId = row[Posts.user_id],
+    userId = row[Posts.userId],
     title = row[Posts.title],
     content = row[Posts.content]
 
@@ -33,7 +33,7 @@ fun resultRowToProfile(row: ResultRow) = Profile(
 )
 
 fun resultRowToUser(row: ResultRow) = User(
-    id = row[Users.id],
+    id = row[Users.id].toString(),
     userName = row[Users.user_name],
     email = row[Users.email],
 )

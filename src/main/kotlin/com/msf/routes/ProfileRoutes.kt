@@ -24,42 +24,45 @@ fun Application.configureProfileRoutes() {
     routing {
         route(PROFILE) {
             get {
-                val profiles = profileService.getAllProfiles()
-                call.respond(profiles)
+                profileService.getAllProfiles()
+                    .apply { call.respond(this) }
             }
 
             get("/{id}") {
-                val profileId =  runCatching { UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@get call.respondText(
-                    "Please provide profile id",
-                    status = HttpStatusCode.BadRequest
-                )
-                val profile = profileService.getProfileById(profileId)
-                call.respond(profile)
+                val profileId =
+                    runCatching { UUID.fromString(call.parameters["id"]) }.getOrNull() ?: return@get call.respondText(
+                        "Please provide profile id",
+                        status = HttpStatusCode.BadRequest
+                    )
+                profileService.getProfileById(profileId)
+                    .apply { call.respond(this) }
             }
 
             post {
                 val profile = call.receive<Profile>()
-                val response = profileService.createProfile(profile)
-                call.respond(status = HttpStatusCode.Created, response)
+                profileService.createProfile(profile)
+                    .apply { call.respond(status = HttpStatusCode.Created, this) }
             }
 
             put("/{id}") {
-                val profileId =  runCatching {UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@put call.respondText(
-                    "Please provide profile id",
-                    status = HttpStatusCode.BadRequest
-                )
+                val profileId =
+                    runCatching { UUID.fromString(call.parameters["id"]) }.getOrNull() ?: return@put call.respondText(
+                        "Please provide profile id",
+                        status = HttpStatusCode.BadRequest
+                    )
                 val profile = call.receive<Profile>()
-                val response = profileService.updateUser(profileId, profile)
-                call.respond(response)
+                profileService.updateUser(profileId, profile)
+                    .apply { call.respond(this) }
             }
 
             delete("/{id}") {
-                val profileId =  runCatching {UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@delete call.respondText(
-                    "please provide id",
-                    status = HttpStatusCode.BadRequest
-                )
-                val response = profileService.deleteProfile(profileId)
-                call.respond(response)
+                val profileId = runCatching { UUID.fromString(call.parameters["id"]) }.getOrNull()
+                    ?: return@delete call.respondText(
+                        "please provide id",
+                        status = HttpStatusCode.BadRequest
+                    )
+                profileService.deleteProfile(profileId)
+                    .apply { call.respond(this) }
             }
         }
     }

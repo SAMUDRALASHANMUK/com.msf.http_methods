@@ -6,7 +6,9 @@ import com.msf.exception.UserDeleteException
 import com.msf.exception.UserNotFoundException
 import com.msf.exception.UserUpdateException
 import com.msf.model.User
+import com.msf.model.UserInput
 import com.msf.repository.UsersRepository
+import com.msf.repository.userId1
 import io.ktor.http.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -24,7 +26,7 @@ class UserService : KoinComponent {
         return user ?: throw UserNotFoundException()
     }
 
-    suspend fun createUser(user: User): User {
+    suspend fun createUser(user: UserInput): userId1 {
         val createdUser = usersRepository.createUser(user.userName, user.email)
         return createdUser ?: throw UserCreateException()
     }

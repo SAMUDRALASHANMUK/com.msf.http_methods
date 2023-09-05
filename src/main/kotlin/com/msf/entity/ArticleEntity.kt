@@ -12,4 +12,6 @@ class ArticleEntity(id: EntityID<UUID>) : UUIDEntity(id) {
     val articleId by Articles.id
     val title by Articles.title
     val body by Articles.body
+
+
 }

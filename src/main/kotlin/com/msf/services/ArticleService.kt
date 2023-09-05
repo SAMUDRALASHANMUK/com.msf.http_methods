@@ -29,5 +29,4 @@ class ArticleService : KoinComponent {
         return article ?: throw ArticleCreateException()
 
     }
-
 }

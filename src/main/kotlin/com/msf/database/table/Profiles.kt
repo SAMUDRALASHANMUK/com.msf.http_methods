@@ -11,6 +11,6 @@ import org.jetbrains.exposed.sql.ReferenceOption
 import java.util.*
 
 object Profiles : UUIDTable(PROFILE_TABLE_NAME) {
-    val user_id: Column<EntityID<UUID>> = reference(USER_ID, Users, onDelete = ReferenceOption.CASCADE).uniqueIndex()
+    val user_id = reference("userId", Users).uniqueIndex()
     val profile_data = varchar(PROFILE_DATA, MAX_PROFILE_DATA_LENGTH)
 }

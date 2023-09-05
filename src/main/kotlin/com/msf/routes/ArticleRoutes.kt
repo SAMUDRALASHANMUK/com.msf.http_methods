@@ -23,20 +23,19 @@ fun Application.configureArticleRoutes() {
         route(ARTICLE) {
 
             get("/") {
-                call.respond(articleService.getAllUsers())
+                articleService.getAllUsers().apply { call.respond(this) }
             }
             get("/{id}") {
-                val id = runCatching { UUID.fromString(call.parameters["id"]) }.getOrNull() ?: return@get call.respondText(
+                val id =
+                    runCatching { UUID.fromString(call.parameters["id"]) }.getOrNull() ?: return@get call.respondText(
                         "Please provide article id",
                         status = HttpStatusCode.BadRequest
                     )
-                val article = articleService.getArticleById(id)
-                call.respond(article)
+                articleService.getArticleById(id).apply { call.respond(this) }
             }
             post("/") {
                 val article = call.receive<Article>()
-                val response = articleService.createArticle(article)
-                call.respond(HttpStatusCode.Created, response)
+                articleService.createArticle(article).apply { call.respond(HttpStatusCode.Created, this) }
             }
         }
     }

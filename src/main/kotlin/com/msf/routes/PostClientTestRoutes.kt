@@ -11,8 +11,7 @@ import io.ktor.server.routing.get
 fun Application.configurePostClientRoutes() {
     routing {
         get("/postClientTest") {
-            val posts = getData()
-            call.respond(posts)
+            getData().apply { call.respond(this) }
         }
     }
 }

@@ -26,22 +26,23 @@ fun Application.configurePostRoutes() {
 
             post {
                 val post = call.receive<Post>()
-                val response = postService.createPost(post)
-                call.respond(HttpStatusCode.Created, response)
+                postService.createPost(post)
+                    .apply { call.respond(HttpStatusCode.Created, this) }
             }
 
             get {
-                val posts = postService.getAllPosts()
-                call.respond(posts)
+                postService.getAllPosts()
+                    .apply { call.respond(this) }
             }
 
             get("/{id}") {
-                val postId =  runCatching { UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@get call.respondText(
-                    "please provide post id",
-                    status = HttpStatusCode.BadRequest
-                )
-                val post = postService.getPostById(postId)
-                call.respond(post)
+                val postId =
+                    runCatching { UUID.fromString(call.parameters["id"]) }.getOrNull() ?: return@get call.respondText(
+                        "please provide post id",
+                        status = HttpStatusCode.BadRequest
+                    )
+                postService.getPostById(postId)
+                    .apply { call.respond(this) }
             }
 
 
@@ -53,17 +54,18 @@ fun Application.configurePostRoutes() {
                 )
 
                 val postRequest = call.receive<Post>()
-                val post = postService.editPost(postRequest)
-                call.respond(post)
+                postService.editPost(postRequest)
+                    .apply { call.respond(this) }
             }
 
             delete("/{id}") {
-                val postId =  runCatching {UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@delete call.respondText(
-                    "please provide post id to delete",
-                    status = HttpStatusCode.BadRequest
-                )
-                val success = postService.deletePost(postId)
-                call.respond(success, "Post deleted")
+                val postId = runCatching { UUID.fromString(call.parameters["id"]) }.getOrNull()
+                    ?: return@delete call.respondText(
+                        "please provide post id to delete",
+                        status = HttpStatusCode.BadRequest
+                    )
+                postService.deletePost(postId)
+                    .apply { call.respond(this, "Post deleted") }
             }
         }
     }
