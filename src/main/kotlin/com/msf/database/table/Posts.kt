@@ -16,7 +16,7 @@ import java.util.*
 
 object Posts : UUIDTable(POSTS_TABLE_NAME) {
 
-    val user_id: Column<EntityID<UUID>> = reference(USER_ID, Users, onDelete = ReferenceOption.CASCADE)
+    val userId: Column<EntityID<UUID>> = reference(USER_ID, Users, onDelete = ReferenceOption.CASCADE)
     val title = varchar(POST_TITLE, MAX_TITLE_LENGTH)
     val content = varchar(POST_CONTENT, MAX_CONTENT_LENGTH)
 }

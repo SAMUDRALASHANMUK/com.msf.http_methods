@@ -8,10 +8,9 @@ import java.util.*
 
 
 class ProfilesEntity(id: EntityID<UUID>) : UUIDEntity(id) {
-    companion object : UUIDEntityClass<CategoriesEntity>(Profiles)
+    companion object : UUIDEntityClass<ProfilesEntity>(Profiles)
 
-    val profileId by Profiles.id
-    val userId by Profiles.user_id
+    val userId by UsersEntity referencedOn  Profiles.user_id
     val profileData by Profiles.profile_data
 
 }

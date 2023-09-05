@@ -8,9 +8,8 @@ import java.util.*
 
 
 class UserLoginEntity(id: EntityID<UUID>) : UUIDEntity(id) {
-    companion object : UUIDEntityClass<CategoriesEntity>(UserLoginTable)
+    companion object : UUIDEntityClass<UserLoginEntity>(UserLoginTable)
 
-    val userLoginId by UserLoginTable.id
     val userName by UserLoginTable.userName
     val password by UserLoginTable.password
 

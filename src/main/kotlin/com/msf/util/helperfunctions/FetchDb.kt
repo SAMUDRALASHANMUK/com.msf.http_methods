@@ -33,7 +33,7 @@ fun resultRowToProfile(row: ResultRow) = Profile(
 )
 
 fun resultRowToUser(row: ResultRow) = User(
-    userId = row[Users.id],
+    id = row[Users.id],
     userName = row[Users.user_name],
     email = row[Users.email],
 )
