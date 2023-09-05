@@ -10,6 +10,7 @@ import com.msf.repository.UsersRepository
 import io.ktor.http.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.UUID
 
 class UserService : KoinComponent {
 
@@ -18,7 +19,7 @@ class UserService : KoinComponent {
         return usersRepository.getAllUsers()
     }
 
-    suspend fun getUserById(userId: Int): User {
+    suspend fun getUserById(userId: UUID): User {
         val user = usersRepository.getUserById(userId)
         return user ?: throw UserNotFoundException()
     }
@@ -28,7 +29,7 @@ class UserService : KoinComponent {
         return createdUser ?: throw UserCreateException()
     }
 
-    suspend fun updateUser(userId: Int, user: User): HttpStatusCode {
+    suspend fun updateUser(userId: UUID, user: User): HttpStatusCode {
         val success = usersRepository.editUser(userId, user.userName, user.email)
         return if (success) {
             HttpStatusCode.OK
@@ -37,7 +38,7 @@ class UserService : KoinComponent {
         }
     }
 
-    suspend fun deleteUser(userId: Int): HttpStatusCode {
+    suspend fun deleteUser(userId: UUID): HttpStatusCode {
         val success = usersRepository.deleteUser(userId)
         return if (success) {
             HttpStatusCode.OK

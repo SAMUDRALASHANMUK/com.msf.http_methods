@@ -9,6 +9,7 @@ import com.msf.repository.CategoryRepository
 import io.ktor.http.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.UUID
 
 class CategoryService : KoinComponent {
     private val categoryRepository by inject<CategoryRepository>()
@@ -16,7 +17,7 @@ class CategoryService : KoinComponent {
         return categoryRepository.getAllCategories()
     }
 
-    suspend fun getCategoryById(id: Int): Category {
+    suspend fun getCategoryById(id: UUID): Category {
         val response = categoryRepository.getCategoryById(id)
         return response ?: throw CategoryNotFoundException()
     }
@@ -26,7 +27,7 @@ class CategoryService : KoinComponent {
         return response ?: throw CategoryCreateException()
     }
 
-    suspend fun updateCategory(id: Int, category: Category): HttpStatusCode {
+    suspend fun updateCategory(id: UUID, category: Category): HttpStatusCode {
         val response = categoryRepository.updateCategory(categoryId = id, category.categoryName)
         return if (response) {
             HttpStatusCode.OK
@@ -35,7 +36,7 @@ class CategoryService : KoinComponent {
         }
     }
 
-    suspend fun deleteCategory(id: Int): HttpStatusCode {
+    suspend fun deleteCategory(id: UUID): HttpStatusCode {
         val response = categoryRepository.removeCategory(id)
         return if (response) {
             HttpStatusCode.OK

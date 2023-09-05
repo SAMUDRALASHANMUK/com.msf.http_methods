@@ -19,6 +19,7 @@ import io.ktor.server.routing.put
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.post
 import org.koin.ktor.ext.inject
+import java.util.*
 
 
 fun Application.configureUsersRoutes() {
@@ -33,7 +34,7 @@ fun Application.configureUsersRoutes() {
             }
 
             get(GET_USER) {
-                val userId = call.parameters["id"]?.toIntOrNull() ?: return@get call.respondText(
+                val userId =  runCatching { UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@get call.respondText(
                     "Please provide user Id",
                     status = HttpStatusCode.BadRequest
                 )
@@ -48,7 +49,7 @@ fun Application.configureUsersRoutes() {
             }
 
             put(UPDATE_USER) {
-                val userId = call.parameters["id"]?.toIntOrNull() ?: return@put call.respond(
+                val userId =  runCatching {UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@put call.respond(
                     status = HttpStatusCode.BadRequest,
                     "please provide id to update"
                 )
@@ -58,7 +59,7 @@ fun Application.configureUsersRoutes() {
             }
 
             delete(DELETE_USER) {
-                val userId = call.parameters["id"]?.toIntOrNull() ?: return@delete call.respondText(
+                val userId = runCatching {UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@delete call.respondText(
                     "Please provide user id to delete",
                     status = HttpStatusCode.BadRequest
                 )

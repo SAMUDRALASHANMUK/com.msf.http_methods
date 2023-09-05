@@ -1,6 +1,6 @@
 package com.msf.routes
 
-import com.msf.model.Article
+import Article
 import com.msf.services.ArticleService
 import com.msf.util.appconstants.ApiEndPoints.ARTICLE
 import io.ktor.http.HttpStatusCode
@@ -14,6 +14,7 @@ import io.ktor.server.routing.routing
 import io.ktor.server.routing.route
 import io.ktor.server.routing.post
 import org.koin.ktor.ext.inject
+import java.util.*
 
 fun Application.configureArticleRoutes() {
 
@@ -25,10 +26,10 @@ fun Application.configureArticleRoutes() {
                 call.respond(articleService.getAllUsers())
             }
             get("/{id}") {
-                val id = call.parameters["id"]?.toIntOrNull() ?: return@get call.respondText(
-                    "Please provide article id",
-                    status = HttpStatusCode.BadRequest
-                )
+                val id = runCatching { UUID.fromString(call.parameters["id"]) }.getOrNull() ?: return@get call.respondText(
+                        "Please provide article id",
+                        status = HttpStatusCode.BadRequest
+                    )
                 val article = articleService.getArticleById(id)
                 call.respond(article)
             }

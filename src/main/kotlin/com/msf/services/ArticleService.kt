@@ -1,12 +1,13 @@
 package com.msf.services
 
+import Article
 import com.msf.exception.ArticleCreateException
 
 import com.msf.exception.ArticleNotFoundException
-import com.msf.model.Article
 import com.msf.repository.ArticlesRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.UUID
 
 class ArticleService : KoinComponent {
     private val articlesRepository by inject<ArticlesRepository>()
@@ -14,7 +15,7 @@ class ArticleService : KoinComponent {
         return articlesRepository.allArticles()
     }
 
-    suspend fun getArticleById(id: Int): Article {
+    suspend fun getArticleById(id: UUID): Article {
         val article = articlesRepository.article(id)
         if (article != null) {
             return article

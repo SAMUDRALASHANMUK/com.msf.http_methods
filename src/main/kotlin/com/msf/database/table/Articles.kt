@@ -11,7 +11,5 @@ object Articles : UUIDTable(ARTICLE_TABLE_NAME) {
 
     val title = varchar(ARTICLE_TITLE, MAX_TITLE_LENGTH)
     val body = varchar(ARTICLE_BODY, MAX_BODY_LENGTH)
-
-
 }
 

@@ -1,6 +1,7 @@
 package com.msf.dao
 
 import com.msf.model.Category
+import java.util.UUID
 
 interface CategoryDAO {
 
@@ -12,11 +13,11 @@ interface CategoryDAO {
     suspend fun getAllCategories(): List<Category>
 
     // Get a category by its ID
-    suspend fun getCategoryById(categoryId: Int): Category?
+    suspend fun getCategoryById(categoryId: UUID): Category?
 
     // Update an existing category
-    suspend fun updateCategory(categoryId: Int, categoryName: String): Boolean
+    suspend fun updateCategory(categoryId: UUID, categoryName: String): Boolean
 
     // Remove a category
-    suspend fun removeCategory(categoryId: Int): Boolean
+    suspend fun removeCategory(categoryId: UUID): Boolean
 }

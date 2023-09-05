@@ -1,7 +1,7 @@
-package com.msf.model
-
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
+import org.jetbrains.exposed.dao.id.EntityID
+import java.util.*
 
 @Serializable
-data class Article(val id: Int, val title: String, val body: String)
-
+data class Article(@Contextual val id: EntityID<@Contextual UUID>, val title: String, val body: String)

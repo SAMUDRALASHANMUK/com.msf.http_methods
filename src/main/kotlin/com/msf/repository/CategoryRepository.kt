@@ -11,6 +11,8 @@ import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import java.util.UUID
+
 
 class CategoryRepository : CategoryDAO {
     override suspend fun addCategory(categoryName: String): Category? = dbQuery {
@@ -26,23 +28,23 @@ class CategoryRepository : CategoryDAO {
         Categories.selectAll().map(::resultRowToCategory)
     }
 
-    override suspend fun getCategoryById(categoryId: Int): Category? = dbQuery {
+    override suspend fun getCategoryById(categoryId: UUID): Category? = dbQuery {
         Categories
-            .select { Categories.category_id eq categoryId }
+            .select { Categories.id eq categoryId }
             .map(::resultRowToCategory)
             .singleOrNull()
     }
 
-    override suspend fun updateCategory(categoryId: Int, categoryName: String): Boolean = dbQuery {
-        val updateRows = Categories.update({ Categories.category_id eq categoryId }) {
-            it[category_id] = categoryId
+    override suspend fun updateCategory(categoryId: UUID, categoryName: String): Boolean = dbQuery {
+        val updateRows = Categories.update({ Categories.id eq categoryId }) {
+            it[id] = categoryId
             it[category_name] = categoryName
         }
         updateRows > 0
     }
 
-    override suspend fun removeCategory(categoryId: Int): Boolean = dbQuery {
-        val deleteRows = Categories.deleteWhere { Categories.category_id eq categoryId }
+    override suspend fun removeCategory(categoryId: UUID): Boolean = dbQuery {
+        val deleteRows = Categories.deleteWhere { Categories.id eq categoryId }
         deleteRows > 0
     }
 }

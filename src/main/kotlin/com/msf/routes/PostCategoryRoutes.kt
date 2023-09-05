@@ -13,6 +13,7 @@ import io.ktor.server.routing.routing
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import org.koin.ktor.ext.inject
+import java.util.*
 
 fun Application.configurePostCategoryRoutes() {
 
@@ -20,20 +21,22 @@ fun Application.configurePostCategoryRoutes() {
 
     routing {
         get(CATEGORY_POSTS_PATH) {
-            val categoryId = call.parameters["category_id"]?.toIntOrNull() ?: return@get call.respond(
-                HttpStatusCode.BadRequest,
-                "please provide category_id"
-            )
+            val categoryId = runCatching { UUID.fromString(call.parameters["category_id"]) }?.getOrNull()
+                ?: return@get call.respond(
+                    HttpStatusCode.BadRequest,
+                    "please provide category_id"
+                )
 
             val associatedPosts = postCategoryService.getPostsForCategory(categoryId)
             call.respond(HttpStatusCode.OK, associatedPosts)
         }
 
         get(POST_CATEGORIES_PATH) {
-            val postId = call.parameters["post_id"]?.toIntOrNull() ?: return@get call.respond(
-                HttpStatusCode.BadRequest,
-                "Please provide post id"
-            )
+            val postId =
+                runCatching { UUID.fromString(call.parameters["post_id"]) }?.getOrNull() ?: return@get call.respond(
+                    HttpStatusCode.BadRequest,
+                    "Please provide post id"
+                )
             val associatedCategories = postCategoryService.getCategoriesForPost(postId)
             call.respond(HttpStatusCode.OK, associatedCategories)
         }

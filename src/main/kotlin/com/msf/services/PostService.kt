@@ -9,6 +9,7 @@ import org.koin.core.component.inject
 import com.msf.model.Post
 import com.msf.repository.PostRepository
 import io.ktor.http.*
+import java.util.UUID
 
 class PostService : KoinComponent {
     private val postRepositoryImpl by inject<PostRepository>()
@@ -21,7 +22,7 @@ class PostService : KoinComponent {
         return response ?: throw PostCreateException()
     }
 
-    suspend fun getPostById(id: Int): Post {
+    suspend fun getPostById(id: UUID): Post {
         val response = postRepositoryImpl.getPostById(id)
         return response ?: throw PostNotFoundException()
     }
@@ -39,7 +40,7 @@ class PostService : KoinComponent {
         }
     }
 
-    suspend fun deletePost(id: Int): HttpStatusCode {
+    suspend fun deletePost(id: UUID): HttpStatusCode {
         val response = postRepositoryImpl.deletePost(id)
         return if (response) {
             HttpStatusCode.OK

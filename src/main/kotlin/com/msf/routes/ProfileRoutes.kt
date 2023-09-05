@@ -15,6 +15,7 @@ import io.ktor.server.routing.put
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.post
 import org.koin.ktor.ext.inject
+import java.util.*
 
 
 fun Application.configureProfileRoutes() {
@@ -28,7 +29,7 @@ fun Application.configureProfileRoutes() {
             }
 
             get("/{id}") {
-                val profileId = call.parameters["id"]?.toIntOrNull() ?: return@get call.respondText(
+                val profileId =  runCatching { UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@get call.respondText(
                     "Please provide profile id",
                     status = HttpStatusCode.BadRequest
                 )
@@ -43,7 +44,7 @@ fun Application.configureProfileRoutes() {
             }
 
             put("/{id}") {
-                val profileId = call.parameters["id"]?.toIntOrNull() ?: return@put call.respondText(
+                val profileId =  runCatching {UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@put call.respondText(
                     "Please provide profile id",
                     status = HttpStatusCode.BadRequest
                 )
@@ -53,7 +54,7 @@ fun Application.configureProfileRoutes() {
             }
 
             delete("/{id}") {
-                val profileId = call.parameters["id"]?.toIntOrNull() ?: return@delete call.respondText(
+                val profileId =  runCatching {UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@delete call.respondText(
                     "please provide id",
                     status = HttpStatusCode.BadRequest
                 )

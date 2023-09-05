@@ -9,6 +9,7 @@ import com.msf.repository.PostCategoriesRepository
 import io.ktor.http.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.UUID
 
 class PostCategoryService : KoinComponent {
 
@@ -22,14 +23,14 @@ class PostCategoryService : KoinComponent {
         }
     }
 
-    suspend fun getCategoriesForPost(postId: Int): List<Category> {
+    suspend fun getCategoriesForPost(postId: UUID): List<Category> {
         val associatedCategories = postCategoriesRepository.getCategoriesForPost(postId)
         return associatedCategories.ifEmpty {
             throw PostCategoryException()
         }
     }
 
-    suspend fun getPostsForCategory(categoryId: Int): List<Post> {
+    suspend fun getPostsForCategory(categoryId: UUID): List<Post> {
         val associatedPosts = postCategoriesRepository.getPostsForCategory(categoryId)
         return associatedPosts.ifEmpty {
             throw PostCategoryException()

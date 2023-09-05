@@ -11,6 +11,7 @@ import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import java.util.UUID
 
 open class UsersRepository : UserDAO {
     override suspend fun createUser(username: String, email: String): User? = dbQuery {
@@ -23,9 +24,9 @@ open class UsersRepository : UserDAO {
     }
 
 
-    override suspend fun getUserById(userId: Int): User? = dbQuery {
+    override suspend fun getUserById(userId: UUID): User? = dbQuery {
         Users
-            .select(Users.user_id eq userId)
+            .select(Users.id eq userId)
             .map(::resultRowToUser)
             .singleOrNull()
     }
@@ -35,17 +36,17 @@ open class UsersRepository : UserDAO {
         Users.selectAll().map(::resultRowToUser)
     }
 
-    override suspend fun editUser(userId: Int, newUsername: String, newEmail: String): Boolean = dbQuery {
+    override suspend fun editUser(userId: UUID, newUsername: String, newEmail: String): Boolean = dbQuery {
 
-        val updateRows = Users.update({ Users.user_id eq userId }) {
+        val updateRows = Users.update({ Users.id eq userId }) {
             it[user_name] = newUsername
             it[email] = email
         }
         updateRows > 0
     }
 
-    override suspend fun deleteUser(userId: Int): Boolean = dbQuery {
-        val deletedRows = Users.deleteWhere { user_id eq userId }
+    override suspend fun deleteUser(userId: UUID): Boolean = dbQuery {
+        val deletedRows = Users.deleteWhere { Users.id eq userId }
         deletedRows > 0
     }
 }

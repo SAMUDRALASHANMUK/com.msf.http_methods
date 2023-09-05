@@ -9,6 +9,7 @@ import com.msf.exception.ProfileUpdateException
 import com.msf.model.Profile
 import com.msf.repository.ProfileRepository
 import io.ktor.http.*
+import java.util.UUID
 
 
 class ProfileService : KoinComponent {
@@ -17,7 +18,7 @@ class ProfileService : KoinComponent {
         return profileRepository.getAllProfiles()
     }
 
-    suspend fun getProfileById(id: Int): Profile {
+    suspend fun getProfileById(id: UUID): Profile {
         return profileRepository.getProfileById(id) ?: throw ProfileNotFoundException()
     }
 
@@ -29,7 +30,7 @@ class ProfileService : KoinComponent {
     }
 
 
-    suspend fun updateUser(id: Int, profile: Profile): HttpStatusCode {
+    suspend fun updateUser(id: UUID, profile: Profile): HttpStatusCode {
         val response = profileRepository.editProfile(id, profile.profileData)
         return if (response) {
             HttpStatusCode.OK
@@ -38,7 +39,7 @@ class ProfileService : KoinComponent {
         }
     }
 
-    suspend fun deleteProfile(id: Int): HttpStatusCode {
+    suspend fun deleteProfile(id: UUID): HttpStatusCode {
         val response = profileRepository.deleteProfile(id)
         return if (response) {
             HttpStatusCode.OK

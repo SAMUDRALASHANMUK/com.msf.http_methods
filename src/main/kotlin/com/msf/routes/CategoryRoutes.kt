@@ -19,6 +19,7 @@ import io.ktor.server.routing.put
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.post
 import org.koin.ktor.ext.inject
+import java.util.UUID
 
 fun Application.configureCategoryRoutes() {
     val categoryService: CategoryService by inject()
@@ -34,7 +35,7 @@ fun Application.configureCategoryRoutes() {
                 call.respond(HttpStatusCode.Created, response)
             }
             get(GET_CATEGORY) {
-                val categoryId = call.parameters["id"]?.toIntOrNull() ?: return@get call.respondText(
+                val categoryId = runCatching {UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@get call.respondText(
                     "No parameters",
                     status = HttpStatusCode.BadRequest
                 )
@@ -43,14 +44,14 @@ fun Application.configureCategoryRoutes() {
             }
 
             put(UPDATE_CATEGORY) {
-                val categoryId = call.parameters["id"]?.toIntOrNull() ?: return@put
+                val categoryId =  runCatching {UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@put
                 val requestCategory = call.receive<Category>()
                 val response = categoryService.updateCategory(categoryId, requestCategory)
                 call.respond(response)
             }
 
             delete(DELETE_CATEGORY) {
-                val categoryId = call.parameters["categoryId"]?.toIntOrNull()
+                val categoryId =  runCatching {UUID.fromString(call.parameters["id"])}.getOrNull()
                     ?: return@delete call.respondText("Please provide categoryId", status = HttpStatusCode.BadRequest)
                 val response = categoryService.deleteCategory(categoryId)
                 call.respond(response, HttpStatusCode.OK)

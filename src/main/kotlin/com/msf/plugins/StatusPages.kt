@@ -1,6 +1,6 @@
 package com.msf.plugins
 
-import com.msf.config.status.*
+import com.msf.exception.*
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
@@ -20,10 +20,6 @@ fun Application.configureStatusPages() {
                 )
 
                 is IllegalStateException -> call.respond(HttpStatusCode.BadRequest, "Bad request: ${cause.message}")
-
-
-
-
 
                 is ArticleCreateException -> call.respondText(
                     " ${cause.message}",
@@ -45,6 +41,7 @@ fun Application.configureStatusPages() {
                     " ${cause.message}",
                     status = HttpStatusCode.NotFound
                 )
+
                 is CategoryCreateException -> call.respondText(
                     " ${cause.message}",
                     status = HttpStatusCode.NotFound

@@ -16,6 +16,7 @@ import io.ktor.server.routing.put
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.post
 import org.koin.ktor.ext.inject
+import java.util.*
 
 fun Application.configurePostRoutes() {
     routing {
@@ -35,7 +36,7 @@ fun Application.configurePostRoutes() {
             }
 
             get("/{id}") {
-                val postId = call.parameters["id"]?.toIntOrNull() ?: return@get call.respondText(
+                val postId =  runCatching { UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@get call.respondText(
                     "please provide post id",
                     status = HttpStatusCode.BadRequest
                 )
@@ -50,13 +51,14 @@ fun Application.configurePostRoutes() {
                     "please provide post id to update",
                     status = HttpStatusCode.BadRequest
                 )
+
                 val postRequest = call.receive<Post>()
                 val post = postService.editPost(postRequest)
                 call.respond(post)
             }
 
             delete("/{id}") {
-                val postId = call.parameters["id"]?.toIntOrNull() ?: return@delete call.respondText(
+                val postId =  runCatching {UUID.fromString(call.parameters["id"])}.getOrNull() ?: return@delete call.respondText(
                     "please provide post id to delete",
                     status = HttpStatusCode.BadRequest
                 )

@@ -7,7 +7,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 import java.util.*
 
 
-class PostsEntity(id: EntityID<UUID>) : UUIDEntity(id) {
+class PostsEntity(postId: EntityID<UUID>) : UUIDEntity(postId) {
     companion object : UUIDEntityClass<CategoriesEntity>(Posts)
 
     val postId by Posts.id

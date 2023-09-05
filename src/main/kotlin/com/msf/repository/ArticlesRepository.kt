@@ -1,8 +1,8 @@
 package com.msf.repository
 
+import Article
 import com.msf.config.DatabaseFactory.dbQuery
 import com.msf.dao.ArticleDAO
-import com.msf.model.Article
 import com.msf.database.table.Articles
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
@@ -11,8 +11,9 @@ import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import java.util.UUID
 
-class ArticlesRepository : ArticleDAO{
+class ArticlesRepository : ArticleDAO {
 
     private fun resultRowToArticle(row: ResultRow) = Article(
         id = row[Articles.id],
@@ -24,7 +25,7 @@ class ArticlesRepository : ArticleDAO{
         Articles.selectAll().map(::resultRowToArticle)
     }
 
-    override suspend fun article(id: Int): Article? = dbQuery {
+    override suspend fun article(id: UUID): Article? = dbQuery {
         Articles
             .select(Articles.id eq id)
             .map(::resultRowToArticle)
@@ -39,14 +40,14 @@ class ArticlesRepository : ArticleDAO{
         insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToArticle)
     }
 
-    override suspend fun editArticle(id: Int, title: String, body: String): Boolean = dbQuery {
+    override suspend fun editArticle(id: UUID, title: String, body: String): Boolean = dbQuery {
         Articles.update({ Articles.id eq id }) {
             it[Articles.title] = title
             it[Articles.body] = body
         } > 0
     }
 
-    override suspend fun deleteArticle(id: Int): Boolean = dbQuery {
+    override suspend fun deleteArticle(id: UUID): Boolean = dbQuery {
         Articles.deleteWhere {
             Articles.id eq id
         } > 0
