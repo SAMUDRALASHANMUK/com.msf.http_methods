@@ -12,5 +12,4 @@ import org.jetbrains.exposed.sql.Table
 object Users : UUIDTable(USER_TABLE_NAME) {
     val user_name = varchar(USER_NAME, MAX_USER_NAME_LENGTH)
     val email = varchar(USER_EMAIL, MAX_EMAIL_LENGTH)
-
 }

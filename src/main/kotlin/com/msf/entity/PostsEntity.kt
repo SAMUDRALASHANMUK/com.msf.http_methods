@@ -10,8 +10,7 @@ import java.util.*
 class PostsEntity(postId: EntityID<UUID>) : UUIDEntity(postId) {
     companion object : UUIDEntityClass<CategoriesEntity>(Posts)
 
-    val postId by Posts.id
-    val userId by Posts.user_id
+    val userId by UsersEntity referencedOn Posts.user_id
     val title by Posts.title
     val content by Posts.content
 }
